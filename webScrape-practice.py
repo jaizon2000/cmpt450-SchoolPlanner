@@ -46,23 +46,40 @@ def response_status_eg():
 def get_prereqs(string):
     # todo make it get a list of prerequisites
     prereqs = []
-    found = False
-    if string.lower().find("consent of the department") != -1:
-        string = string.replace("Prerequisites", "").replace("Prerequisite", "").replace(":", "").strip()
-        print(f"isFound: {string}")
-    else:
-        string = string.split(" ")
-        for elem in string:
-            # using any() method: https://bit.ly/311XgrZ
 
-            try:
-                for tag in ["CMPT", "MATH", "STAT", "300-level"]:
-                    if elem.find(tag) != -1:
-                        print(f"isFound: {elem}")
-                        found = True
-            finally:
-                if not found:
-                    print(elem)
+    found = False
+    string = string.replace("Prerequisites", "").replace("Prerequisite", "").replace(":", "").strip()
+    if string.lower().find("consent of the department") != -1:
+        prereqs.append(string)
+        # print(f"isFound: {string}")
+
+    string_list = string.split(" ")
+    for elem in string_list:
+        elem = elem.replace("\xa0", " ")
+        # using any() method: https://bit.ly/311XgrZ
+
+        # find courses
+        for tag in ["CMPT", "MATH", "STAT", "300-level", "200-level", "100-level", "and", "or"]:
+            if elem.find(tag) != -1:
+                found = True
+
+        if found:
+            prereqs.append(elem)
+            # print(f"isFound: {elem}")
+            found = False
+
+    print(prereqs)
+
+    cleaned = []
+
+    # prep cleaned list
+    for elem in prereqs:
+        if elem in ["or", "and"]:
+            cleaned.append([])
+    # return all index of found: https://bit.ly/3c8msn0
+    indexes = [i for i, x in enumerate(prereqs) if x in ["or", "and"]]
+    print(indexes)
+    print(cleaned)
 
 
 def print_course(course_elems):
@@ -92,7 +109,6 @@ def print_course(course_elems):
         if course_prereq_data is not None:
             course_prereq = course_prereq_data.text \
                 .replace('.', '') \
-                .replace(',', '') \
                 .strip()
             get_prereqs(course_prereq)
 
@@ -108,6 +124,13 @@ def print_course(course_elems):
 
 
 def init_df(list_of_courses):
+    """
+    take the given list of Courses classes and convert into a pandas dataframe
+    :param list_of_courses: list of Course classes
+    :return: pandas dataframe
+    """
+    prereqs = []
+
     return pd.DataFrame(
         {
             "id": [course.id for course in list_of_courses],

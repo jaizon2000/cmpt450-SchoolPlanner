@@ -25,18 +25,5 @@ cmpt201 = Course("CMPT 201", "Practical Programming Methodology", 3,
 # list of Course classes
 all = [cmpt103, cmpt200, cmpt201]
 
-
-def init_df(list_of_courses):
-    return pd.DataFrame(
-        {
-            "id": [course.id for course in list_of_courses],
-            "name": [course.name for course in list_of_courses],
-            "credit": [course.credit for course in list_of_courses],
-            "description": [course.desc for course in list_of_courses]
-            # "prereq": [course.prereq for course in all] #todo get it to return a string e.g "CMPT 101, CMPT 103"
-        }
-    )
-
-
 # df["id"] = [course.id for course in all]
 # df.insert(1, str, ["CMPT", "AA"], True)
