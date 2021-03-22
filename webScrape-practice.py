@@ -19,13 +19,13 @@ import networkx as nx
 from Course import *
 
 G = nx.Graph()
+
+
 # print(df)
 
-courses = []
 
 # https://docs.python.org/3/library/pprint.html
 
-course_id_list = []
 
 def response_status_eg():
     response = requests.get('https://api.github.com')
@@ -44,7 +44,7 @@ def response_status_eg():
 
 
 def get_prereqs(string):
-    #todo make it get a list of prerequisites
+    # todo make it get a list of prerequisites
     prereqs = []
     found = False
     if string.lower().find("consent of the department") != -1:
@@ -81,7 +81,6 @@ def print_course(course_elems):
         # Course description
         course_desc = course_elem.find(class_='courseblockdesc')
 
-
         # Course pre-requisites
         course_prereq_data = course_elem.find(class_='courseblockextra')
 
@@ -102,8 +101,22 @@ def print_course(course_elems):
 
             # print(course_prereq)
             # print(course_prereq_data.text)
-        #todo create a Course class when parameters all known
+
+        course_id_list.append(Course(course_id, course_title, course_credits, course_desc.text))
+        # todo create a Course class when parameters all known
         print()
+
+
+def init_df(list_of_courses):
+    return pd.DataFrame(
+        {
+            "id": [course.id for course in list_of_courses],
+            "name": [course.name for course in list_of_courses],
+            "credit": [course.credit for course in list_of_courses],
+            "description": [course.desc for course in list_of_courses]
+            # "prereq": [course.prereq for course in all] #todo get it to return a string e.g "CMPT 101, CMPT 103"
+        }
+    )
 
 
 # Page URL
@@ -113,4 +126,8 @@ soup = BeautifulSoup(page.content, 'html.parser')  # get html content
 
 courses = soup.find(id='textcontainer')  # find id
 course_elems = courses.find_all(class_='courseblock')  # find all elements with given class
+
+course_id_list = []  # list of Course classes
 print_course(course_elems)
+df = init_df(course_id_list)
+df.to_csv('cmpt-courses.csv', index=False)
