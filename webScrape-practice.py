@@ -49,14 +49,15 @@ def get_prereqs(string):
 
     found = False
     string = string.replace("Prerequisites", "").replace("Prerequisite", "").replace(":", "").strip()
+
+    # using any() method: https://bit.ly/311XgrZ
     if string.lower().find("consent of the department") != -1:
-        prereqs.append(string)
-        # print(f"isFound: {string}")
+        prereqs.append("Consent of the department")
+    # print(f"isFound: {string}")
 
     string_list = string.split(" ")
     for elem in string_list:
         elem = elem.replace("\xa0", " ")
-        # using any() method: https://bit.ly/311XgrZ
 
         # find courses
         for tag in ["CMPT", "MATH", "ENGL", "STAT", "PSYC", "300-level", "200-level", "100-level", "and", "or"]:
@@ -116,7 +117,6 @@ def print_course(course_elems):
                 .strip()
             prereqs = get_prereqs(course_prereq)
 
-
             # print(course_prereq)
             # print(course_prereq_data.text)
 
@@ -139,7 +139,8 @@ def init_df(list_of_courses):
             "name": [course.name for course in list_of_courses],
             "credit": [course.credit for course in list_of_courses],
             "description": [course.desc for course in list_of_courses],
-            "prereq": [course.prereq for course in list_of_courses] #todo get it to return a string e.g "CMPT 101, CMPT 103"
+            "prereq": [course.prereq for course in list_of_courses]
+            # todo get it to return a string e.g "CMPT 101, CMPT 103"
         }
     )
 
