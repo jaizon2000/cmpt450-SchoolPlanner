@@ -59,7 +59,7 @@ def get_prereqs(string):
         # using any() method: https://bit.ly/311XgrZ
 
         # find courses
-        for tag in ["CMPT", "MATH", "STAT", "300-level", "200-level", "100-level", "and", "or"]:
+        for tag in ["CMPT", "MATH", "ENGL", "STAT", "PSYC", "300-level", "200-level", "100-level", "and", "or"]:
             if elem.find(tag) != -1:
                 found = True
 
@@ -81,6 +81,8 @@ def get_prereqs(string):
     print(indexes)
     print(cleaned)
 
+    return tuple(prereqs)
+
 
 def print_course(course_elems):
     for course_elem in course_elems:
@@ -93,7 +95,7 @@ def print_course(course_elems):
         # Title
         course_title = course[1]
         # Credits
-        course_credits = course[2]
+        course_credits = int(course[2].replace(" Credits", ""))
 
         # Course description
         course_desc = course_elem.find(class_='courseblockdesc')
@@ -106,19 +108,19 @@ def print_course(course_elems):
         print(course_title)
         print(course_credits)
         print(course_desc.text)
+        prereqs = ()
         if course_prereq_data is not None:
             course_prereq = course_prereq_data.text \
                 .replace('.', '') \
+                .replace(',', '') \
                 .strip()
-            get_prereqs(course_prereq)
+            prereqs = get_prereqs(course_prereq)
 
-            # .replace("Prerequisites:", "") \
-            # .replace("Prerequisite:", "") \
 
             # print(course_prereq)
             # print(course_prereq_data.text)
 
-        course_id_list.append(Course(course_id, course_title, course_credits, course_desc.text))
+        course_id_list.append(Course(course_id, course_title, course_credits, course_desc.text, prereqs))
         # todo create a Course class when parameters all known
         print()
 
@@ -129,15 +131,15 @@ def init_df(list_of_courses):
     :param list_of_courses: list of Course classes
     :return: pandas dataframe
     """
-    prereqs = []
 
+    # for every course
     return pd.DataFrame(
         {
             "id": [course.id for course in list_of_courses],
             "name": [course.name for course in list_of_courses],
             "credit": [course.credit for course in list_of_courses],
-            "description": [course.desc for course in list_of_courses]
-            # "prereq": [course.prereq for course in all] #todo get it to return a string e.g "CMPT 101, CMPT 103"
+            "description": [course.desc for course in list_of_courses],
+            "prereq": [course.prereq for course in list_of_courses] #todo get it to return a string e.g "CMPT 101, CMPT 103"
         }
     )
 
