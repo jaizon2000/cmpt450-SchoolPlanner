@@ -4,12 +4,28 @@
 # Jan 18, 2021
 # Jehdi Aizon
 
+# Import packages for data cleaning
+import numpy as np
+import pandas as pd
+import re  # For finding specific strings in the text
+
+# Import for web scraping
 import requests
 from bs4 import BeautifulSoup
 
+# networkx: https://bit.ly/3f3OGkC
+import networkx as nx
+
+from Course import *
+
+G = nx.Graph()
+# print(df)
+
+courses = []
 
 # https://docs.python.org/3/library/pprint.html
 
+course_id_list = []
 
 def response_status_eg():
     response = requests.get('https://api.github.com')
@@ -27,41 +43,74 @@ def response_status_eg():
         response.raise_for_status()
 
 
-def print_course_description(course_elems):
+def get_prereqs(string):
+    #todo make it get a list of prerequisites
+    prereqs = []
+    found = False
+    if string.lower().find("consent of the department") != -1:
+        string = string.replace("Prerequisites", "").replace("Prerequisite", "").replace(":", "").strip()
+        print(f"isFound: {string}")
+    else:
+        string = string.split(" ")
+        for elem in string:
+            # using any() method: https://bit.ly/311XgrZ
+
+            try:
+                for tag in ["CMPT", "MATH", "STAT", "300-level"]:
+                    if elem.find(tag) != -1:
+                        print(f"isFound: {elem}")
+                        found = True
+            finally:
+                if not found:
+                    print(elem)
+
+
+def print_course(course_elems):
     for course_elem in course_elems:
         # Course code, title, and credits
         course = course_elem.find(class_='courseblocktitle')
         course = course.text.split("\n")
 
-        course_code = course[0].replace("\xa0", " ")
+        # ID
+        course_id = course[0].replace("\xa0", " ")
+        # Title
         course_title = course[1]
+        # Credits
         course_credits = course[2]
 
-        # Couurse description
+        # Course description
         course_desc = course_elem.find(class_='courseblockdesc')
 
+
         # Course pre-requisites
-        course_prereq = course_elem.find(class_='courseblockextra')
+        course_prereq_data = course_elem.find(class_='courseblockextra')
 
         # Print
-        print(course_code)
+        print(course_id)
         print(course_title)
         print(course_credits)
         print(course_desc.text)
-        if course_prereq is not None:
-            print(course_prereq.text)
+        if course_prereq_data is not None:
+            course_prereq = course_prereq_data.text \
+                .replace('.', '') \
+                .replace(',', '') \
+                .strip()
+            get_prereqs(course_prereq)
 
+            # .replace("Prerequisites:", "") \
+            # .replace("Prerequisite:", "") \
+
+            # print(course_prereq)
+            # print(course_prereq_data.text)
+        #todo create a Course class when parameters all known
         print()
 
-def main():
-    # Page URL
-    URL = 'https://calendar.macewan.ca/course-descriptions/cmpt/'
-    page = requests.get(URL)  # request for page content (beautifulsoup)
-    soup = BeautifulSoup(page.content, 'html.parser')  # get html content
 
-    courses = soup.find(id='textcontainer')  # find id
-    course_elems = courses.find_all(class_='courseblock')  # find all elements with given class
-    print_course_description(course_elems)
+# Page URL
+URL = 'https://calendar.macewan.ca/course-descriptions/cmpt/'
+page = requests.get(URL)  # request for page content (beautifulsoup)
+soup = BeautifulSoup(page.content, 'html.parser')  # get html content
 
-
-main()
+courses = soup.find(id='textcontainer')  # find id
+course_elems = courses.find_all(class_='courseblock')  # find all elements with given class
+print_course(course_elems)
