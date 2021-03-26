@@ -1,5 +1,15 @@
 import pandas as pd
-
+class Student:
+    def __init__(self, name, student_id, courses_taken):
+        '''
+        A Student
+        :param name: name
+        :param student_id: 7 digit integer number
+        :param courses_taken: list of Course classes
+        '''
+        self.name = name
+        self.student_id = student_id
+        self.courses_taken = courses_taken
 
 class Course:
     def __init__(self, id, name, credit, desc, prereq=None):
@@ -11,6 +21,8 @@ class Course:
         self.desc = desc
         self.prereq = prereq
 
+    def has_prereq(self, Student):
+        return False
 
 cmpt103 = Course("CMPT 103", "Introduction to Computing II", 3,
                  "This course continues the overview of computing science concepts that was started in CMPT 101. Topics include representation of compound data using abstraction, programming languages, and modularity; algorithms that use these data structures; and networks with the TCP/IP model and client/server architecture. Students continue with the syntax of a high-level programming language: functions, arrays, and user-defined data types.",
@@ -24,6 +36,9 @@ cmpt201 = Course("CMPT 201", "Practical Programming Methodology", 3,
 
 # list of Course classes
 all = [cmpt103, cmpt200, cmpt201]
+
+# for course in Course list
+
 
 # df["id"] = [course.id for course in all]
 # df.insert(1, str, ["CMPT", "AA"], True)
