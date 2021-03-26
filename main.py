@@ -20,41 +20,47 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP]
 )
 
+# Column 1 - Input
+input_col = dbc.Col(
+    html.Div([
+        html.H1("Inputs"),  # Title
+        dcc.Dropdown(
+            options=[
+                {'label': 'Edmonton', 'value': 'YEG'},
+                {'label': '', 'value': ''}
+            ],
+            value='YEG'
+        )
+    ]), width={"size": 3},
+)
+
+# Column 2 - Data Tables
+data_col = dbc.Col(
+    html.Div('Checklist'),
+    width={"size": 3},
+
+)
+
+# Column 3 - Checklist
+checklist_col = dbc.Col(
+    html.Div('Checklist'),
+    width={"size": 3},
+
+)
+
 # Add content
 app.layout = html.Div(
     [
         dbc.Row(
             [
                 # Column 1 - Input
-                dbc.Col(
-                    html.Div(
-                        [
-                            html.H1("Inputs"),  # Title
-                            dcc.Dropdown(
-                                options=[
-                                    {'label': 'Edmonton', 'value': 'YEG'},
-                                    {'label': '', 'value': ''}
-                                ],
-                                value='YEG'
-                            )
-                        ]
-                    ),
-                    width={"size": 3},
-                ),
+                input_col,
 
                 # Column 2 - Data
-                dbc.Col(
-                    html.Div('Data'),
-                    width={"size": 3},
-
-                ),
+                data_col,
 
                 # Column 3 - Checklist
-                dbc.Col(
-                    html.Div('Checklist'),
-                    width={"size": 3},
-
-                ),
+                checklist_col,
 
             ]
         ),
