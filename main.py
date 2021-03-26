@@ -34,7 +34,9 @@ input_col = dbc.Col(
     ]), width=3
 )
 
-# Column 2 - Data Tables
+'''
+Column 2 - Data Tables
+'''
 data_col = dbc.Col(
     dbc.Container([
         html.H1('Data Tables'),
@@ -47,11 +49,16 @@ data_col = dbc.Col(
     ]), width=6
 )
 
-# Column 3 - Checklist
+'''
+Column 3 - Checklist
+'''
 checklist_col = dbc.Col(
     dbc.Container([
-        html.H1('Checklist'),
-        dbc.Row(dbc.Col(
+        html.H1('Computer Science Major Checklist'),
+
+        # Declaring Computer Science
+        dbc.Row(dbc.Col([
+            html.B('Declaring Computer Science'),
             dcc.Checklist(
                 options=[
                     {'label': 'CMPT 101', 'value': 'check1'},
@@ -61,10 +68,53 @@ checklist_col = dbc.Col(
                 ],
                 value=['check1'],
                 labelStyle={'display': 'block'}
-            ),
-            # width=2
-        )
-        )
+            )
+        ])),
+
+        # Computer Science Major
+        dbc.Row(dbc.Col([
+            html.B('Computer Science Major'),
+            dcc.Checklist(
+                options=[
+                    {'label': 'CMPT 101', 'value': 'check1'},
+                    {'label': 'MATH 114', 'value': 'check2'},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
+                    {'label': 'STAT 151', 'value': 'check4'},
+                ],
+                value=['check1'],
+                labelStyle={'display': 'block'}
+            )
+        ])),
+
+        # Gaming Stream
+        dbc.Row(dbc.Col([
+            html.B('Gaming Stream'),
+            dcc.Checklist(
+                options=[
+                    {'label': 'CMPT 101', 'value': 'check1'},
+                    {'label': 'MATH 114', 'value': 'check2'},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
+                    {'label': 'STAT 151', 'value': 'check4'},
+                ],
+                value=['check1'],
+                labelStyle={'display': 'block'}
+            )
+        ])),
+
+        dbc.Row(dbc.Col([
+            html.B('Credits'),
+            dcc.Checklist(
+                options=[
+                    {'label': 'CMPT 101', 'value': 'check1'},
+                    {'label': 'MATH 114', 'value': 'check2'},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
+                    {'label': 'STAT 151', 'value': 'check4'},
+                ],
+                value=['check1'],
+                labelStyle={'display': 'block'}  # make new line per check list
+            )
+        ])),
+
     ]), width=3
 )
 
