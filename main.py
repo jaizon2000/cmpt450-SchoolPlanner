@@ -22,7 +22,7 @@ app = dash.Dash(
 
 # Column 1 - Input
 input_col = dbc.Col(
-    html.Div([
+    dbc.Container([
         html.H1("Inputs"),  # Title
         dcc.Dropdown(
             options=[
@@ -31,21 +31,35 @@ input_col = dbc.Col(
             ],
             value='YEG'
         )
-    ]), width={"size": 3},
+    ]), width={"size": 2}
 )
 
 # Column 2 - Data Tables
 data_col = dbc.Col(
-    html.Div('Checklist'),
-    width={"size": 3},
-
+    dbc.Container([
+        html.H1('Data Tables'),
+        dbc.Row(
+            html.H2("Table")
+        ),
+        dbc.Row(
+            html.H2("Sunburst")
+        )
+    ]), width={"size": 6}
 )
 
 # Column 3 - Checklist
 checklist_col = dbc.Col(
-    html.Div('Checklist'),
-    width={"size": 3},
-
+    dbc.Container([
+        html.H1('Checklist'),
+        dbc.Row(dcc.Checklist(
+            options=[
+                {'label': 'CMPT 101', 'value': 'check1'},
+                {'label': 'MATH 114', 'value': 'check2'},
+                {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
+                {'label': 'STAT 151', 'value': 'check4'},
+            ], value=['check1']
+        ))
+    ]), width=3
 )
 
 # Add content
@@ -64,7 +78,7 @@ app.layout = html.Div(
 
             ]
         ),
-    ]
+    ],
 )
 
 # Run the app
