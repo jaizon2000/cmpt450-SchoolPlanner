@@ -135,25 +135,17 @@ data_col = dbc.Col(
             # Filtering data table: https://bit.ly/31tUrjG
             # datatable basic: https://bit.ly/3fmu0EB
             dash_table.DataTable(id='table',
-                                 columns=[
-                                     {'name': 'Course ID', 'id': 'id', 'type': 'text'},
-                                     {'name': 'Title', 'id': 'name', 'type': 'text'},
-                                     {'name': 'Credit', 'id': 'credit', 'type': 'numeric'},
-                                     {'name': 'Description', 'id': 'description', 'type': 'text'},
-                                     {'name': 'Prerequisites', 'id': 'prereq', 'type': 'object'},
-                                 ],
+                                 columns=[{'id': c, 'name': c.title()} for c in df.columns],
                                  data=df.to_dict('records'),
                                  filter_action='native',
 
                                  style_table={
-                                     'height': 100,
-                                 },
-                                 style_cell={
-                                     'whiteSpace': 'normal',
-                                     'height': 'auto',
+                                     'height': 400,
+                                     'overflowX': 'auto',
+                                     'overflowY': 'auto',
                                  },
                                  style_data={
-                                     'width': '150px', 'minWidth': '150px', 'maxWidth': '150px',
+                                     'width': '50px', 'minWidth': '50px', 'maxWidth': '150px',
                                      'overflow': 'hidden',
                                      'textOverflow': 'ellipsis',
                                  }
