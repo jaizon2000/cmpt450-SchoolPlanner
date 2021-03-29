@@ -92,9 +92,10 @@ input_col = dbc.Col(
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
             # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
-            makeCollapse(1, course_class_list[3]),
-            makeCollapse(2, course_class_list[2]),
-            makeCollapse(3, course_class_list[1]),
+            makeCollapse(i, course_class_list[i]) for i in range(3)
+            # makeCollapse(1, course_class_list[3]),
+            # makeCollapse(2, course_class_list[2]),
+            # makeCollapse(3, course_class_list[1]),
             # makeCollapse(i) for i in course_class_list
         ]),
             style={'overflow': 'scroll', 'height': '50vh', 'overflowX': 'hidden'},  # style container
@@ -268,6 +269,23 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
                       ],
                       )
 
+print(collapseList.getList())
+
+
+class Bools():
+    def __init__(self, bool_list):
+        self.list = bool_list
+
+    def list(self):
+        return self.list
+
+    def toggle(self, i):
+        self.list[i] = not self.list[i]
+        return self.list
+
+
+bools = Bools([None for i in range(3)])
+
 
 @app.callback(
     # Output('container-button-timestamp', 'children'),
@@ -277,8 +295,8 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"group-{i}-toggle", "n_clicks") for i in range(1, 4)],
-    [State(f"collapse-{i}", "is_open") for i in range(1, 4)],
+    [Input(f"group-{i}-toggle", "n_clicks") for i in range(3)],
+    [State(f"collapse-{i}", "is_open") for i in range(3)],
 )
 # def displayClick(btn1, btn2):
 #     print(btn1)
@@ -295,19 +313,23 @@ def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
     print(n1, n2, n3, is_open1, is_open2, is_open3)
     if not ctx.triggered:
-        return False, False, False
+        return [False for i in range(3)]
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
     print(button_id)
 
-    if button_id == "group-1-toggle" and n1:
-        return not is_open1, False, False
-    elif button_id == "group-2-toggle" and n2:
-        return False, not is_open2, False
-    elif button_id == "group-3-toggle" and n3:
-        return False, False, not is_open3
-    return False, False, False
+    for i in range(3):
+        if button_id == f"group-{i}-toggle":
+            bools.toggle(i)
+            return bools.list
+    # if button_id == "group-0-toggle" and n1:
+    #     return not is_open1, False, False
+    # elif button_id == "group-1-toggle" and n2:
+    #     return False, not is_open2, False
+    # elif button_id == "group-2-toggle" and n3:
+    #     return False, False, not is_open3
+    return [False for i in range(3)]
 
 
 # Run the app
