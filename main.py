@@ -6,6 +6,7 @@ import pandas as pd
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
+import dash_table
 
 # App Callback for Dash
 from dash.dependencies import Input, Output, State
@@ -63,6 +64,7 @@ def makeCollapse(i):
             ),
         ]
     )
+
 
 cmpt103 = Course("CMPT 103", "Introduction to Computing II", 3,
                  "This course continues the overview of computing science concepts that was started in CMPT 101. Topics include representation of compound data using abstraction, programming languages, and modularity; algorithms that use these data structures; and networks with the TCP/IP model and client/server architecture. Students continue with the syntax of a high-level programming language: functions, arrays, and user-defined data types.",
@@ -128,12 +130,21 @@ Column 2 - Data Tables
 data_col = dbc.Col(
     dbc.Container([
         html.H1('Data Tables'),
-        dbc.Row(
-            html.H2("Table")
-        ),
-        dbc.Row(
-            html.H2("Sunburst")
-        )
+        dbc.Row(dbc.Col([
+            html.H2("Table"),
+            dash_table.DataTable(id='table',
+                                 columns=[
+                                     {'name': 'Course ID', 'id': 'course-id', 'type': 'numeric'},
+                                     {'name': 'Title', 'id': 'title', 'type': 'text'},
+                                     {'name': 'Prerequisites', 'id': 'prereq', 'type': 'numeric'},
+                                 ],
+                                 data=df.to_dict('records'),
+                                 filter_action='native',
+                                 ),
+        ])),
+        dbc.Row([
+            html.H2("Sunburst"),
+        ])
     ]), width=6
 )
 
@@ -250,7 +261,6 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 #     elif 'view-btn-sun' in changed_id:
 #         msg = 'Button 2 was most recently clicked'
 #     return html.Div(msg)
-
 
 def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
