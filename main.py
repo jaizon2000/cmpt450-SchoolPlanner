@@ -132,14 +132,31 @@ data_col = dbc.Col(
         html.H1('Data Tables'),
         dbc.Row(dbc.Col([
             html.H2("Table"),
+            # Filtering data table: https://bit.ly/31tUrjG
+            # datatable basic: https://bit.ly/3fmu0EB
             dash_table.DataTable(id='table',
                                  columns=[
-                                     {'name': 'Course ID', 'id': 'course-id', 'type': 'numeric'},
-                                     {'name': 'Title', 'id': 'title', 'type': 'text'},
-                                     {'name': 'Prerequisites', 'id': 'prereq', 'type': 'numeric'},
+                                     {'name': 'Course ID', 'id': 'id', 'type': 'text'},
+                                     {'name': 'Title', 'id': 'name', 'type': 'text'},
+                                     {'name': 'Credit', 'id': 'credit', 'type': 'numeric'},
+                                     {'name': 'Description', 'id': 'description', 'type': 'text'},
+                                     {'name': 'Prerequisites', 'id': 'prereq', 'type': 'object'},
                                  ],
                                  data=df.to_dict('records'),
                                  filter_action='native',
+
+                                 style_table={
+                                     'height': 100,
+                                 },
+                                 style_cell={
+                                     'whiteSpace': 'normal',
+                                     'height': 'auto',
+                                 },
+                                 style_data={
+                                     'width': '150px', 'minWidth': '150px', 'maxWidth': '150px',
+                                     'overflow': 'hidden',
+                                     'textOverflow': 'ellipsis',
+                                 }
                                  ),
         ])),
         dbc.Row([
