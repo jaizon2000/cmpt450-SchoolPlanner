@@ -20,6 +20,7 @@ from Course import *
 
 # Get data
 df = pd.read_csv('cmpt-courses-cleaned.csv')
+dff = df.to_dict('records')
 
 # Create the app and add extra styles
 app = dash.Dash(
@@ -82,10 +83,12 @@ input_col = dbc.Col(
             html.B("Courses"),
             dcc.Dropdown(
                 options=[
-                    {'label': 'Edmonton', 'value': 'YEG'},
-                    {'label': '', 'value': ''}
+                    # {'label': 'Edmonton', 'value': 'YEG'},
+                    # {'label': '', 'value': ''}
+                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in dff
                 ],
-                value='YEG'
+                value='YEG',
+                multi=True,
             )
         ])),
 
@@ -277,7 +280,9 @@ def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     if not ctx.triggered:
         return False, False, False
     else:
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
+
+    print(button_id)
 
     if button_id == "group-1-toggle" and n1:
         return not is_open1, False, False
