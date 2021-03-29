@@ -21,6 +21,7 @@ from Course import *
 # Get data
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 dff = df.to_dict('records')
+course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in dff]
 
 # Create the app and add extra styles
 app = dash.Dash(
@@ -43,25 +44,25 @@ class CollapseList:
 collapseList = CollapseList()
 
 
-def makeCollapse(i):
-    # course_id = course.id.split(' ')
+def makeCollapse(course):
+    course_id = course.id.replace(' ', '-')
 
-    # collapseList.append(f"{course_id[0]}-{course_id[1]}-collapse-toggle")
+    collapseList.append(f"{course_id}-collapse-toggle")
 
     return dbc.Card(
         [
             dbc.CardHeader(
                 html.H2(
                     dbc.Button(
-                        f"Collapsible group #{i}",
+                        f"{course.id}",
                         color="link",
-                        id=f"group-{i}-toggle",
+                        id=f"group-{course_id}-toggle",
                     )
                 )
             ),
             dbc.Collapse(
-                dbc.CardBody(f"This is the content of group {i}..."),
-                id=f"collapse-{i}",
+                dbc.CardBody(f"{course.desc}"),
+                id=f"collapse-{course_id}",
             ),
         ]
     )
@@ -79,12 +80,11 @@ input_col = dbc.Col(
 
         html.H1("Inputs"),  # Title
 
+        # Multi Course Dropdown
         dbc.Row(dbc.Col([
             html.B("Courses"),
             dcc.Dropdown(
                 options=[
-                    # {'label': 'Edmonton', 'value': 'YEG'},
-                    # {'label': '', 'value': ''}
                     {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in dff
                 ],
                 value='YEG',
@@ -92,10 +92,12 @@ input_col = dbc.Col(
             )
         ])),
 
+        # Course Collapse Descriptions
         dbc.Row(dbc.Col([
-            makeCollapse(1),
-            makeCollapse(2),
-            makeCollapse(3),
+            # makeCollapse(1),
+            # makeCollapse(2),
+            # makeCollapse(3),
+            makeCollapse(i) for i in course_class_list
         ])),
 
         dbc.Row(dbc.Col([
@@ -144,7 +146,7 @@ data_col = dbc.Col(
 
                                  style_table={
                                      'height': 400,
-                                     'overflowX': 'auto',
+                                     'overflowX': 'auto',  # scroll: https://bit.ly/3waaEII
                                      'overflowY': 'auto',
                                  },
                                  style_data={
@@ -276,7 +278,7 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 
 def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
-
+    print(n1, n2, n3, is_open1, is_open2, is_open3)
     if not ctx.triggered:
         return False, False, False
     else:
