@@ -150,7 +150,7 @@ Column 2 - Data Tables
 '''
 data_col = dbc.Col(
     dbc.Container([
-        html.H1('Data Tables'),
+        html.H1('My Progress'),
         dbc.Row(dbc.Col([
             html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
@@ -269,9 +269,9 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
                       ],
                       )
 
-print(collapseList.getList())
-
-
+'''
+Bools: class to toggle course accordions
+'''
 class Bools():
     def __init__(self, bool_list):
         self.list = bool_list
@@ -280,9 +280,13 @@ class Bools():
         return self.list
 
     def toggle(self, i):
+        '''
+        toggle the boolean at given i pos
+        :param i: which pos in list to toggle
+        :return: return edited list
+        '''
         self.list[i] = not self.list[i]
         return self.list
-
 
 bools = Bools([None for i in range(39)])
 
@@ -317,8 +321,9 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
                      is_open19, is_open20, is_open21, is_open22, is_open23, is_open24, is_open25, is_open26, is_open27,
                      is_open28, is_open29, is_open30, is_open31, is_open32, is_open33, is_open34, is_open35, is_open36,
                      is_open37, is_open38, is_open39):
+
     ctx = dash.callback_context
-    # print(n1, n2, n3, is_open1, is_open2, is_open3)
+
     if not ctx.triggered:
         return [False for i in range(39)]
     else:
