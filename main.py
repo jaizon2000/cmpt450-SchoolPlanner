@@ -22,7 +22,7 @@ from Course import *
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 dff = df.to_dict('records')
 course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in dff]
-print(course_class_list[3].prereq)
+print(len(dff))
 # Create the app and add extra styles
 app = dash.Dash(
     __name__,
@@ -92,7 +92,7 @@ input_col = dbc.Col(
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
             # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
-            makeCollapse(i, course_class_list[i]) for i in range(3)
+            makeCollapse(i, course_class_list[i]) for i in range(39)
             # makeCollapse(1, course_class_list[3]),
             # makeCollapse(2, course_class_list[2]),
             # makeCollapse(3, course_class_list[1]),
@@ -284,7 +284,7 @@ class Bools():
         return self.list
 
 
-bools = Bools([None for i in range(3)])
+bools = Bools([None for i in range(39)])
 
 
 @app.callback(
@@ -295,8 +295,8 @@ bools = Bools([None for i in range(3)])
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"group-{i}-toggle", "n_clicks") for i in range(3)],
-    [State(f"collapse-{i}", "is_open") for i in range(3)],
+    [Input(f"group-{i}-toggle", "n_clicks") for i in range(39)],
+    [State(f"collapse-{i}", "is_open") for i in range(39)],
 )
 # def displayClick(btn1, btn2):
 #     print(btn1)
@@ -309,17 +309,24 @@ bools = Bools([None for i in range(3)])
 #         msg = 'Button 2 was most recently clicked'
 #     return html.Div(msg)
 
-def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
+def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21,
+                     n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34, n35, n36, n37, n38, n39,
+
+                     is_open1, is_open2, is_open3, is_open4, is_open5, is_open6, is_open7, is_open8, is_open9,
+                     is_open10, is_open11, is_open12, is_open13, is_open14, is_open15, is_open16, is_open17, is_open18,
+                     is_open19, is_open20, is_open21, is_open22, is_open23, is_open24, is_open25, is_open26, is_open27,
+                     is_open28, is_open29, is_open30, is_open31, is_open32, is_open33, is_open34, is_open35, is_open36,
+                     is_open37, is_open38, is_open39):
     ctx = dash.callback_context
-    print(n1, n2, n3, is_open1, is_open2, is_open3)
+    # print(n1, n2, n3, is_open1, is_open2, is_open3)
     if not ctx.triggered:
-        return [False for i in range(3)]
+        return [False for i in range(39)]
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
     print(button_id)
 
-    for i in range(3):
+    for i in range(39):
         if button_id == f"group-{i}-toggle":
             bools.toggle(i)
             return bools.list
@@ -329,7 +336,7 @@ def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     #     return False, not is_open2, False
     # elif button_id == "group-2-toggle" and n3:
     #     return False, False, not is_open3
-    return [False for i in range(3)]
+    return [False for i in range(39)]
 
 
 # Run the app
