@@ -43,11 +43,10 @@ class CollapseList:
 
 collapseList = CollapseList()
 
-
 def makeCollapse(course):
     course_id = course.id.replace(' ', '-')
 
-    collapseList.append(f"{course_id}-collapse-toggle")
+    collapseList.append(f"group-{course_id}-toggle")
 
     return dbc.Card(
         [
@@ -97,7 +96,8 @@ input_col = dbc.Col(
             # makeCollapse(1),
             # makeCollapse(2),
             # makeCollapse(3),
-            makeCollapse(i) for i in course_class_list
+            # makeCollapse(i) for i in course_class_list
+            makeCollapse(cmpt103)
         ])),
 
         dbc.Row(dbc.Col([
@@ -256,14 +256,13 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 
 @app.callback(
     # Output('container-button-timestamp', 'children'),
-
-    [Output(f"collapse-{i}", "is_open") for i in range(1, 4)],
+    [Output(f"collapse-{i.id.replace(' ', '-')}", "is_open") for i in course_class_list],
 
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"group-{i}-toggle", "n_clicks") for i in range(1, 4)],
-    [State(f"collapse-{i}", "is_open") for i in range(1, 4)],
+    [Input(f"{i}", "n_clicks") for i in collapseList.getList()],
+    [State(f"collapse-{i.id.replace(' ', '-')}", "is_open") for i in course_class_list],
 )
 # def displayClick(btn1, btn2):
 #     print(btn1)
@@ -278,21 +277,24 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 
 def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
-    print(n1, n2, n3, is_open1, is_open2, is_open3)
+    # print(n1, n2, n3, is_open1, is_open2, is_open3)
+
     if not ctx.triggered:
-        return False, False, False
+        return [False for i in collapseList.getList()]
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
-    print(button_id)
+    for c in collapseList.getList():
+        if button_id == c:
+            print(button_id)
 
-    if button_id == "group-1-toggle" and n1:
-        return not is_open1, False, False
-    elif button_id == "group-2-toggle" and n2:
-        return False, not is_open2, False
-    elif button_id == "group-3-toggle" and n3:
-        return False, False, not is_open3
-    return False, False, False
+    # if button_id == "group-1-toggle" and n1:
+    #     return not is_open1, False, False
+    # elif button_id == "group-2-toggle" and n2:
+    #     return False, not is_open2, False
+    # elif button_id == "group-3-toggle" and n3:
+    #     return False, False, not is_open3
+    # return False, False, False
 
 
 # Run the app
