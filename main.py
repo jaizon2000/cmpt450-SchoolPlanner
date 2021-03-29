@@ -22,7 +22,7 @@ from Course import *
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 dff = df.to_dict('records')
 course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in dff]
-
+print(course_class_list[3].prereq)
 # Create the app and add extra styles
 app = dash.Dash(
     __name__,
@@ -43,25 +43,34 @@ class CollapseList:
 
 collapseList = CollapseList()
 
-def makeCollapse(course):
-    course_id = course.id.replace(' ', '-')
 
-    collapseList.append(f"group-{course_id}-toggle")
+def makeCollapse(i, course):
+    # course_id = course.id.split(' ')
 
+    # collapseList.append(f"{course_id[0]}-{course_id[1]}-collapse-toggle")
+    collapseList.getList().append(f"{i}")
     return dbc.Card(
         [
+            # CARD TITLE
             dbc.CardHeader(
                 html.H2(
                     dbc.Button(
                         f"{course.id}",
                         color="link",
-                        id=f"group-{course_id}-toggle",
+                        id=f"group-{i}-toggle",
                     )
                 )
             ),
+
+            # CARD CONTENT
             dbc.Collapse(
-                dbc.CardBody(f"{course.desc}"),
-                id=f"collapse-{course_id}",
+                dbc.CardBody([
+                    html.H5(f"{course.name}", className="card-title"),
+                    html.H6(f"{course.credit} Credits", className="card-subtitle"),
+                    html.P(f"{course.desc}", className="card-text"),
+                    dbc.CardFooter(f"{str(course.prereq)}"),
+                ]),
+                id=f"collapse-{i}",
             ),
         ]
     )
@@ -79,9 +88,22 @@ input_col = dbc.Col(
 
         html.H1("Inputs"),  # Title
 
+        html.H4("Courses"),
+        # Course Collapse Descriptions
+        dbc.Row(dbc.Col([
+            # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
+            makeCollapse(1, course_class_list[3]),
+            makeCollapse(2, course_class_list[2]),
+            makeCollapse(3, course_class_list[1]),
+            # makeCollapse(i) for i in course_class_list
+        ]),
+            style={'overflow': 'scroll', 'height': '50vh', 'overflowX': 'hidden'},  # style container
+        ),
+
+        html.H4("Mark selected course(s) as:"),
+
         # Multi Course Dropdown
         dbc.Row(dbc.Col([
-            html.B("Courses"),
             dcc.Dropdown(
                 options=[
                     {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in dff
@@ -91,17 +113,8 @@ input_col = dbc.Col(
             )
         ])),
 
-        # Course Collapse Descriptions
+        # SELECTED COURSES
         dbc.Row(dbc.Col([
-            # makeCollapse(1),
-            # makeCollapse(2),
-            # makeCollapse(3),
-            # makeCollapse(i) for i in course_class_list
-            makeCollapse(cmpt103)
-        ])),
-
-        dbc.Row(dbc.Col([
-            html.B("Mark selected course(s) as:"),
             dcc.RadioItems(
                 options=[
                     {'label': 'Completed', 'value': 'done'},
@@ -115,8 +128,9 @@ input_col = dbc.Col(
 
         ])),
 
+        # CHNAGE VIEW BTNS
+        html.H4("Change view:"),
         dbc.Container([
-            dbc.Row(html.B("Change view:")),
             dbc.Row([
                 dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
                 dbc.Button("Sunburst", color="primary", id='view-btn-sun', n_clicks=0),
@@ -125,7 +139,8 @@ input_col = dbc.Col(
         ]),
 
         # dbc.Row(dbc.Col([])),
-    ]), width=3
+    ]),
+    width=3
 )
 
 print(' '.join(map(str, collapseList.getList())))
@@ -234,9 +249,8 @@ checklist_col = dbc.Col(
 '''
 MAIN: Add content
 '''
-app.layout = html.Div(style={'backgroundColor': '#00000'},
+app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'},
                       children=[
-
                           dbc.Row(
                               [
                                   # Column 1 - Input
@@ -250,19 +264,21 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 
                               ]
                           ),
+
                       ],
                       )
 
 
 @app.callback(
     # Output('container-button-timestamp', 'children'),
-    [Output(f"collapse-{i.id.replace(' ', '-')}", "is_open") for i in course_class_list],
+
+    [Output(f"collapse-{i}", "is_open") for i in collapseList.getList()],
 
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"{i}", "n_clicks") for i in collapseList.getList()],
-    [State(f"collapse-{i.id.replace(' ', '-')}", "is_open") for i in course_class_list],
+    [Input(f"group-{i}-toggle", "n_clicks") for i in range(1, 4)],
+    [State(f"collapse-{i}", "is_open") for i in range(1, 4)],
 )
 # def displayClick(btn1, btn2):
 #     print(btn1)
@@ -277,24 +293,21 @@ app.layout = html.Div(style={'backgroundColor': '#00000'},
 
 def toggle_accordion(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
-    # print(n1, n2, n3, is_open1, is_open2, is_open3)
-
+    print(n1, n2, n3, is_open1, is_open2, is_open3)
     if not ctx.triggered:
-        return [False for i in collapseList.getList()]
+        return False, False, False
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
-    for c in collapseList.getList():
-        if button_id == c:
-            print(button_id)
+    print(button_id)
 
-    # if button_id == "group-1-toggle" and n1:
-    #     return not is_open1, False, False
-    # elif button_id == "group-2-toggle" and n2:
-    #     return False, not is_open2, False
-    # elif button_id == "group-3-toggle" and n3:
-    #     return False, False, not is_open3
-    # return False, False, False
+    if button_id == "group-1-toggle" and n1:
+        return not is_open1, False, False
+    elif button_id == "group-2-toggle" and n2:
+        return False, not is_open2, False
+    elif button_id == "group-3-toggle" and n3:
+        return False, False, not is_open3
+    return False, False, False
 
 
 # Run the app
