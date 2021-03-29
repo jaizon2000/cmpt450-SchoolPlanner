@@ -166,12 +166,6 @@ data_col = dbc.Col(
 
                 ],
 
-                # specific column styles
-                style_cell_conditional=[
-                    {'if': {'column_id': 'prereq'},
-                     'whiteSpace': 'normal',
-                     'height': 'auto'}],
-
                 data=df.to_dict('records'),  # data to use
                 filter_action='native',  # for filtering
 
@@ -184,14 +178,24 @@ data_col = dbc.Col(
 
                 # style columns
                 style_data={
-                    'width': '25px', 'minWidth': '25px', 'maxWidth': '150px',
+                    'minWidth': '25px',
                     'overflow': 'hidden',
                     'textOverflow': 'ellipsis',
                 },
 
+                # specific column styles
+                style_cell_conditional=[
+                    {'if': {'column_id': 'prereq'},
+                     'whiteSpace': 'normal',
+                     'height': 'auto'},
+
+                    {'if': {'column_id': 'name'},
+
+                     'width': 'auto'},
+                ],
+
             ),
         ])),
-
 
         dbc.Row([
             html.H2("Sunburst"),
