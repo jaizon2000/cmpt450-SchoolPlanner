@@ -22,7 +22,7 @@ from Course import *
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 dff = df.to_dict('records')
 course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in dff]
-print(len(dff))
+
 # Create the app and add extra styles
 app = dash.Dash(
     __name__,
@@ -30,18 +30,48 @@ app = dash.Dash(
 )
 
 
+# Helper Classes
 class CollapseList:
-    def __init__(self):
+    def __init__(self, size):
         self.list = []
+        self.size = size
 
     def append(self, other):
         self.list.append(other)
+        self.size += 1
 
     def getList(self):
         return self.list  # list of id string of collapse groups
 
+    def size(self):
+        return self.size
 
-collapseList = CollapseList()
+
+collapseList = CollapseList(len(df))
+
+
+class Bools():
+    """
+    Bools: class to toggle course accordions
+    """
+
+    def __init__(self, bool_list):
+        self.list = bool_list
+
+    def list(self):
+        return self.list
+
+    def toggle(self, i):
+        """
+        toggle the boolean at given i pos
+        :param i: which pos in list to toggle
+        :return: return edited list
+        """
+        self.list[i] = not self.list[i]
+        return self.list
+
+
+bools = Bools([None for i in range(len(df))])
 
 
 def makeCollapse(i, course):
@@ -92,7 +122,7 @@ input_col = dbc.Col(
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
             # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
-            makeCollapse(i, course_class_list[i]) for i in range(39)
+            makeCollapse(i, course_class_list[i]) for i in range(len(df))
             # makeCollapse(1, course_class_list[3]),
             # makeCollapse(2, course_class_list[2]),
             # makeCollapse(3, course_class_list[1]),
@@ -144,7 +174,6 @@ input_col = dbc.Col(
     width=3
 )
 
-print(' '.join(map(str, collapseList.getList())))
 '''
 Column 2 - Data Tables
 '''
@@ -294,30 +323,6 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
                       ],
                       )
 
-'''
-Bools: class to toggle course accordions
-'''
-
-
-class Bools():
-    def __init__(self, bool_list):
-        self.list = bool_list
-
-    def list(self):
-        return self.list
-
-    def toggle(self, i):
-        '''
-        toggle the boolean at given i pos
-        :param i: which pos in list to toggle
-        :return: return edited list
-        '''
-        self.list[i] = not self.list[i]
-        return self.list
-
-
-bools = Bools([None for i in range(39)])
-
 
 @app.callback(
     # Output('container-button-timestamp', 'children'),
@@ -327,8 +332,8 @@ bools = Bools([None for i in range(39)])
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"group-{i}-toggle", "n_clicks") for i in range(39)],
-    [State(f"collapse-{i}", "is_open") for i in range(39)],
+    [Input(f"group-{i}-toggle", "n_clicks") for i in range(len(df))],
+    [State(f"collapse-{i}", "is_open") for i in range(len(df))],
 )
 # def displayClick(btn1, btn2):
 #     print(btn1)
@@ -352,13 +357,13 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        return [False for i in range(39)]
+        return [False for i in range(len(df))]
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
     print(button_id)
 
-    for i in range(39):
+    for i in range(len(df)):
         if button_id == f"group-{i}-toggle":
             bools.toggle(i)
             return bools.list
@@ -368,7 +373,7 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     #     return False, not is_open2, False
     # elif button_id == "group-2-toggle" and n3:
     #     return False, False, not is_open3
-    return [False for i in range(39)]
+    return [False for i in range(len(df))]
 
 
 # Run the app
