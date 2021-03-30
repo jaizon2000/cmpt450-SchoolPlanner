@@ -31,17 +31,20 @@ class Student:
 
         return self.my_courses
 
+    def df(self):
+        return self.my_courses
+
     def __repr__(self):
         return f"{self.my_courses}"
 
 
-stud = Student()
-stud.add("CMPT 201", "WIP")
-stud.add("CMPT 201", "Planned")
-
-stud.add("CMPT 200", "Planned")
-stud.add("CMPT 200", "Completed")
-
-stud.add("CMPT 305", "Planned")
+# stud = Student()
+# stud.add("CMPT 201", "WIP")
+# stud.add("CMPT 201", "Planned")
+#
+# stud.add("CMPT 200", "Planned")
 # stud.add("CMPT 200", "Completed")
-print(stud)
+#
+# stud.add("CMPT 305", "Planned")
+# # stud.add("CMPT 200", "Completed")
+# print(stud)
