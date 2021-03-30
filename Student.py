@@ -13,7 +13,7 @@ class Student:
         self.course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in
                                   self.df_dict]
 
-        self.my_courses = self.df.copy().iloc[0:0]
+        self.my_courses = self.df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
 
     def add(self, course, status):
         # find course to add in course database
