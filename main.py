@@ -15,13 +15,16 @@ from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 
 from Course import *
+from Student import *
 
 # -------------------------------------------
 
 # Get data
 df = pd.read_csv('cmpt-courses-cleaned.csv')
-dff = df.to_dict('records')
-course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in dff]
+df_dict = df.to_dict('records')
+stud_df = df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
+# print(stud_df, df)
+course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in df_dict]
 
 # Create the app and add extra styles
 app = dash.Dash(
@@ -106,10 +109,6 @@ def makeCollapse(i, course):
     )
 
 
-cmpt103 = Course("CMPT 103", "Introduction to Computing II", 3,
-                 "This course continues the overview of computing science concepts that was started in CMPT 101. Topics include representation of compound data using abstraction, programming languages, and modularity; algorithms that use these data structures; and networks with the TCP/IP model and client/server architecture. Students continue with the syntax of a high-level programming language: functions, arrays, and user-defined data types.",
-                 ())
-
 '''
 Column 1 - Input
 '''
@@ -118,7 +117,7 @@ input_col = dbc.Col(
 
         html.H1("Inputs"),  # Title
 
-        html.H4("Courses"),
+        html.H4("Find Courses"),
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
             # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
@@ -133,18 +132,19 @@ input_col = dbc.Col(
 
         html.H4("Mark selected course(s) as:"),
 
-        # Multi Course Dropdown
+        # MULTI SELECTED COURSES
         dbc.Row(dbc.Col([
             dcc.Dropdown(
+                id='courses-input',
                 options=[
-                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in dff
+                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
                 ],
-                value='YEG',
+                placeholder='Select Courses...',
                 multi=True,
             )
         ])),
 
-        # SELECTED COURSES
+        # COURSE STATUS RADIO BTNS
         dbc.Row(dbc.Col([
             dcc.RadioItems(
                 options=[
@@ -159,7 +159,7 @@ input_col = dbc.Col(
 
         ])),
 
-        # CHNAGE VIEW BTNS
+        # CHANGE VIEW BTNS
         html.H4("Change view:"),
         dbc.Container([
             dbc.Row([
@@ -185,7 +185,7 @@ data_col = dbc.Col(
             # Filtering data table: https://bit.ly/31tUrjG
             # datatable basic: https://bit.ly/3fmu0EB
             dash_table.DataTable(
-                id='table',
+                id='my-table',
                 # columns=[{'id': c, 'name': c.title()} for c in df.columns],
                 columns=[
                     {'id': 'id', 'name': 'Course ID'},
@@ -195,7 +195,7 @@ data_col = dbc.Col(
 
                 ],
 
-                data=df.to_dict('records'),  # data to use
+                data=stud_df.to_dict('records'),  # data to use
                 filter_action='native',  # for filtering
 
                 # table styling
@@ -222,7 +222,6 @@ data_col = dbc.Col(
 
                      'width': 'auto'},
                 ],
-
             ),
         ])),
 
@@ -325,16 +324,22 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
 
 
 @app.callback(
+    # OUTPUTS - should come first
     # Output('container-button-timestamp', 'children'),
 
-    [Output(f"collapse-{i}", "is_open") for i in collapseList.getList()],
-
+    [Output(f"collapse-{i}", "is_open") for i in collapseList.getList()],  # course toggles
+    Output('my-table', 'data'),
+    # INPUTS - comes after outputs
     # Input('view-btn-default', 'n_clicks'),
     # Input('view-btn-sun', 'n_clicks'),
 
-    [Input(f"group-{i}-toggle", "n_clicks") for i in range(len(df))],
-    [State(f"collapse-{i}", "is_open") for i in range(len(df))],
+    [Input(f"group-{i}-toggle", "n_clicks") for i in range(len(df))],  # course toggles
+    [State(f"collapse-{i}", "is_open") for i in range(len(df))],  # course toggles
 )
+def update_my_table(selected_courses):
+    pass
+
+
 # def displayClick(btn1, btn2):
 #     print(btn1)
 #     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
