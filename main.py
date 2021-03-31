@@ -22,6 +22,8 @@ from Student import *
 # Get data
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 df_dict = df.to_dict('records')
+
+stud = Student()
 stud_df = df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
 # print(stud_df, df)
 course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in df_dict]
@@ -147,6 +149,7 @@ input_col = dbc.Col(
         # COURSE STATUS RADIO BTNS
         dbc.Row(dbc.Col([
             dcc.RadioItems(
+                id='status-radio',
                 options=[
                     {'label': 'Completed', 'value': 'done'},
                     {'label': 'Work In Progress', 'value': 'wip'},
@@ -155,7 +158,7 @@ input_col = dbc.Col(
                 value='done',
                 labelStyle={'display': 'block'}  # make new line option
             ),
-            dbc.Button("Add to Planner", color="primary", id='add-to-planner', n_clicks=0),
+            dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0),
 
         ])),
 
@@ -195,7 +198,7 @@ data_col = dbc.Col(
 
                 ],
 
-                data=stud_df.to_dict('records'),  # data to use
+                data=stud.getdf().to_dict('records'),  # data to use
                 filter_action='native',  # for filtering
 
                 # table styling
@@ -323,34 +326,15 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
                       )
 
 
+# COURSE ACCORDIONS
 @app.callback(
     # OUTPUTS - should come first
-    # Output('container-button-timestamp', 'children'),
-
     [Output(f"collapse-{i}", "is_open") for i in collapseList.getList()],  # course toggles
-    Output('my-table', 'data'),
-    # INPUTS - comes after outputs
-    # Input('view-btn-default', 'n_clicks'),
-    # Input('view-btn-sun', 'n_clicks'),
 
+    # INPUTS - comes after outputs
     [Input(f"group-{i}-toggle", "n_clicks") for i in range(len(df))],  # course toggles
     [State(f"collapse-{i}", "is_open") for i in range(len(df))],  # course toggles
 )
-def update_my_table(selected_courses):
-    pass
-
-
-# def displayClick(btn1, btn2):
-#     print(btn1)
-#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-#     # print(changed_id)
-#     if 'view-btn-default' in changed_id:
-#         msg = 'Button 1 was most recently clicked'
-#         changed_id
-#     elif 'view-btn-sun' in changed_id:
-#         msg = 'Button 2 was most recently clicked'
-#     return html.Div(msg)
-
 def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21,
                      n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34, n35, n36, n37, n38, n39,
 
@@ -372,13 +356,44 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
         if button_id == f"group-{i}-toggle":
             bools.toggle(i)
             return bools.list
-    # if button_id == "group-0-toggle" and n1:
-    #     return not is_open1, False, False
-    # elif button_id == "group-1-toggle" and n2:
-    #     return False, not is_open2, False
-    # elif button_id == "group-2-toggle" and n3:
-    #     return False, False, not is_open3
     return [False for i in range(len(df))]
+
+# CHANGE VIEW
+# @app.callback(
+#     Output('container-button-timestamp', 'children'),
+#
+#     Input('view-btn-default', 'n_clicks'),
+#     Input('view-btn-sun', 'n_clicks'),
+# )
+# def displayClick(btn1, btn2):
+#     print(btn1)
+#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+#     # print(changed_id)
+#     if 'view-btn-default' in changed_id:
+#         msg = 'Button 1 was most recently clicked'
+#         changed_id
+#     elif 'view-btn-sun' in changed_id:
+#         msg = 'Button 2 was most recently clicked'
+#     return html.Div(msg)
+
+
+# COURSE SELECTIONS DROPDOWN MULTISELECT
+@app.callback(
+    Output("my-table", "data"),
+
+    Input('add-to-planner-btn', 'n_clicks'),
+    State('courses-input', 'value'),
+    State('status-radio', 'value'),
+)
+def update_my_table(n_clicks, selected_courses, radio):
+    # ctx = dash.callback_context
+    # button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    print(selected_courses, radio, n_clicks)
+    if selected_courses is not None:
+        [stud.add(c, "Planned") for c in selected_courses]
+    print(stud.getdf().to_dict('records'))
+    return stud.getdf().to_dict('records')
 
 
 # Run the app
