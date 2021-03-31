@@ -271,13 +271,13 @@ checklist_col = dbc.Col([
             dbc.Checklist(
                 id='checklist-input-1',
                 options=[
-                    {'label': 'CMPT 103', 'value': 1},
-                    {'label': 'CMPT 200', 'value': 2},
-                    {'label': 'CMPT 201', 'value': 3},
-                    {'label': 'CMPT 395', 'value': 4},
-                    {'label': 'CMPT 496', 'value': 4},
+                    {'label': 'CMPT 103', 'value': 5},
+                    {'label': 'CMPT 200', 'value': 6},
+                    {'label': 'CMPT 201', 'value': 7},
+                    {'label': 'CMPT 395', 'value': 8},
+                    {'label': 'CMPT 496', 'value': 9},
                 ],
-                value=[1],
+                value=[5],
             )
         ])),
 
@@ -287,30 +287,29 @@ checklist_col = dbc.Col([
             dbc.Checklist(
                 id='checklist-input-2',
                 options=[
-                    {'label': 'CMPT 230', 'value': 1},
-                    {'label': 'CMPT 291', 'value': 2},
-                    {'label': 'CRWR 295', 'value': 3},
-                    {'label': 'CMPT 330', 'value': 4},
-                    {'label': 'CMPT 370', 'value': 5},
-                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 6},
+                    {'label': 'CMPT 230', 'value': 10},
+                    {'label': 'CMPT 291', 'value': 11},
+                    {'label': 'CRWR 295', 'value': 12},
+                    {'label': 'CMPT 330', 'value': 13},
+                    {'label': 'CMPT 370', 'value': 14},
+                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 15},
                 ],
-                value=[1],
-                labelStyle={'display': 'block'}
+                value=[10],
             )
         ])),
 
+        # CREDIT CHECKLIST
         dbc.Row(dbc.Col([
             html.H6('Credits'),
             dbc.Checklist(
                 id='checklist-input-3',
                 options=[
-                    {'label': 'CMPT 101', 'value': 1},
-                    {'label': 'MATH 114', 'value': 2},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
-                    {'label': 'STAT 151', 'value': 4},
+                    {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
+                    {'label': '1', 'value': 16},
+                    {'label': '1 OR MATH 125', 'value': 17},
+                    {'label': '1', 'value': 18},
                 ],
                 value=[1],
-                labelStyle={'display': 'block'}  # make new line per check list
             )
         ])),
 
@@ -322,24 +321,27 @@ checklist_col = dbc.Col([
 '''
 MAIN: Add content
 '''
-app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'},
-                      children=[
-                          dbc.Row(
-                              [
-                                  # Column 1 - Input
-                                  input_col,
+app.layout = dbc.Container(
+    style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'height': '100vh'},
+    children=
+    [
+        dbc.Row(
+            [
+                # Column 1 - Input
+                input_col,
 
-                                  # Column 2 - Data
-                                  data_col,
+                # Column 2 - Data
+                data_col,
 
-                                  # Column 3 - Checklist
-                                  checklist_col,
+                # Column 3 - Checklist
+                checklist_col,
 
-                              ],
-                          ),
+            ],
+        ),
 
-                      ],
-                      )
+    ],
+    fluid=True
+)
 
 
 # COURSE ACCORDIONS
@@ -383,19 +385,24 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     # INPUT
     Input('add-to-planner-btn', 'n_clicks'),
 
-    # [Input(f'checklist-input-{i}', 'value') for i in range(4)],
-    [Input('checklist-input-0', 'value')],
+    [Input(f'checklist-input-{i}', 'value') for i in range(4)],
 
     # STATE
-    State('checklist-input-0', 'options'),
+    [State(f'checklist-input-{i}', 'options') for i in range(4)],
 
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
-def update_my_table(n_clicks, checklist_vals, checks, selected_courses, radio_select):
-    print(checklist_vals)
+def update_my_table(n_clicks, checklist_vals1, checklist_vals2, checklist_vals3, checklist_vals4,
+                    checks1, checks2, checks3, checks4, selected_courses, radio_select):
+    print(checklist_vals1)
+
+    checks = checks1 + checks2 + checks3 + checks4
+    checklist_vals = checklist_vals1 + checklist_vals2 + checklist_vals3 + checklist_vals4
+
     all_labels = [check['label'] for check in checks]
     active_labels = [check['label'] for check in checks if check['value'] in checklist_vals]
+
     print(active_labels)
 
     for course in active_labels:

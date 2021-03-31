@@ -28,13 +28,13 @@ class Student:
 
         # add/change status col of given course
         self.my_courses.loc[self.my_courses['id'] == course.upper(), 'status'] = status
-        print(self)
+        # print(self)
         return self.my_courses
 
     def delete(self, course):
         i = self.my_courses[self.my_courses.id == course.upper()].index
         self.my_courses = self.my_courses.drop(i)
-        print(self)
+        # print(self)
         return self.my_courses
 
     def getdf(self, sort=True):
