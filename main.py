@@ -386,9 +386,11 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
 )
 def update_my_table(n_clicks, checklist_vals, checks, selected_courses, radio_select):
     print(checklist_vals, checks)
-    for check in checks:
-        if check['value'] in checklist_vals:
-            print(check)
+    labels = [print(check) for check in checks if check['value'] in checklist_vals]
+
+    # for check in checks:
+    #     if check['value'] in checklist_vals:
+    #         print(check)
 
     if len(checklist_vals) != 0:
         pass
