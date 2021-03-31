@@ -195,7 +195,7 @@ data_col = dbc.Col(
                     {'id': 'name', 'name': 'Course Name'},
                     {'id': 'credit', 'name': 'Credits'},
                     {'id': 'prereq', 'name': 'Prerequisites'},
-
+                    {'id': 'status', 'name': 'Status'},
                 ],
 
                 data=stud.getdf().to_dict('records'),  # data to use
@@ -358,6 +358,22 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
             return bools.list
     return [False for i in range(len(df))]
 
+
+# COURSE SELECTIONS DROPDOWN MULTISELECT
+@app.callback(
+    Output("my-table", "data"),
+
+    Input('add-to-planner-btn', 'n_clicks'),
+    State('courses-input', 'value'),
+    State('status-radio', 'value'),
+)
+def update_my_table(n_clicks, selected_courses, radio_select):
+    if selected_courses is not None:
+        [stud.add(c, radio_select.upper()) for c in selected_courses]
+
+    return stud.getdf().to_dict('records')
+
+
 # CHANGE VIEW
 # @app.callback(
 #     Output('container-button-timestamp', 'children'),
@@ -375,26 +391,6 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
 #     elif 'view-btn-sun' in changed_id:
 #         msg = 'Button 2 was most recently clicked'
 #     return html.Div(msg)
-
-
-# COURSE SELECTIONS DROPDOWN MULTISELECT
-@app.callback(
-    Output("my-table", "data"),
-
-    Input('add-to-planner-btn', 'n_clicks'),
-    State('courses-input', 'value'),
-    State('status-radio', 'value'),
-)
-def update_my_table(n_clicks, selected_courses, radio):
-    # ctx = dash.callback_context
-    # button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-    print(selected_courses, radio, n_clicks)
-    if selected_courses is not None:
-        [stud.add(c, "Planned") for c in selected_courses]
-    print(stud.getdf().to_dict('records'))
-    return stud.getdf().to_dict('records')
-
 
 # Run the app
 if __name__ == '__main__':

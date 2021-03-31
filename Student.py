@@ -31,8 +31,12 @@ class Student:
         print(self)
         return self.my_courses
 
-    def getdf(self):
-        return self.my_courses
+    def getdf(self, sort=True):
+        if sort:
+            return self.my_courses.sort_values(by='id')
+
+        else:
+            return self.my_courses
 
     def __repr__(self):
         return f"{self.my_courses}"
@@ -41,10 +45,11 @@ class Student:
 stud1 = Student()
 stud1.add("CMPT 201", "WIP")
 stud1.add("CMPT 201", "Planned")
+stud1.add("CMPT 101", "Planned")
+
+stud1.add("CMPT 200", "Planned")
+# stud1.add("CMPT 200", "Completed")
 #
-# stud.add("CMPT 200", "Planned")
-# stud.add("CMPT 200", "Completed")
-#
-# stud.add("CMPT 305", "Planned")
-# # stud.add("CMPT 200", "Completed")
+# stud1.add("CMPT 305", "Planned")
+# # stud1.add("CMPT 200", "Completed")
 # print(stud)
