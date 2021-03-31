@@ -19,7 +19,7 @@ class Student:
         # find course to add in course database
         other = self.df[self.df['id'] == course.upper()]
 
-        if len(other):
+        if len(other) == 0:
             # course doesn't exist in database
             return f"{course.upper()} doesn't exist the database"
 
@@ -31,15 +31,15 @@ class Student:
 
         return self.my_courses
 
-    def df(self):
+    def getdf(self):
         return self.my_courses
 
     def __repr__(self):
         return f"{self.my_courses}"
 
 
-# stud = Student()
-# stud.add("CMPT 201", "WIP")
+stud1 = Student()
+stud1.add("CMPT 201", "WIP")
 # stud.add("CMPT 201", "Planned")
 #
 # stud.add("CMPT 200", "Planned")
