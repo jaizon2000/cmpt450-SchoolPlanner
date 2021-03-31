@@ -54,8 +54,16 @@ data table changes -> change checklist
 
 ### change in checklist -> change data table
 
-#### Input
+[Getting labels and values of checklist](https://community.plotly.com/t/dcc-dropdown-using-selected-label-in-callback-not-value/22003/9) 
 
 #### Output
 
-#### State
+`my-table` - 
+
+#### Input
+
+`checklist-input-0` - 
+
+`checklist` - 
+
+#### ~~State~~

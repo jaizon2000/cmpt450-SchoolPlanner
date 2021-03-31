@@ -254,7 +254,6 @@ checklist_col = dbc.Col([
         dbc.Row(dbc.Col([
             html.H6('Declaring Computer Science'),
             dbc.Checklist(
-                id='checklist-input-0',
                 options=[
                     {'label': 'CMPT 101', 'value': 1},
                     {'label': 'MATH 114', 'value': 2},
@@ -262,7 +261,7 @@ checklist_col = dbc.Col([
                     {'label': 'STAT 151', 'value': 4},
                 ],
                 value=[1],
-                # labelStyle={'display': 'block'}
+                id='checklist-input-0',
             )
         ])),
 
@@ -278,7 +277,6 @@ checklist_col = dbc.Col([
                     {'label': 'STAT 151', 'value': 4},
                 ],
                 value=[1],
-                labelStyle={'display': 'block'}
             )
         ])),
 
@@ -314,7 +312,8 @@ checklist_col = dbc.Col([
         ])),
 
     ]), ],
-    width=3
+    width=3,
+    id='checklist',
 )
 
 '''
@@ -378,12 +377,22 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     Output("my-table", "data"),
 
     Input('add-to-planner-btn', 'n_clicks'),
-    Input('checklist', 'values'),
+    # [Input(f'checklist-input-{i}', 'value') for i in range(4)],
+    [Input('checklist-input-0', 'value')],
+
+    State('checklist-input-0', 'options'),
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
-def update_my_table(n_clicks, checklist_vals, selected_courses, radio_select):
-    print(checklist_vals)
+def update_my_table(n_clicks, checklist_vals, checks, selected_courses, radio_select):
+    print(checklist_vals, checks)
+    for check in checks:
+        if check['value'] in checklist_vals:
+            print(check)
+
+    if len(checklist_vals) != 0:
+        pass
+
     if selected_courses is not None:
         [stud.add(c, radio_select.upper()) for c in selected_courses]
 
@@ -409,5 +418,7 @@ def update_my_table(n_clicks, checklist_vals, selected_courses, radio_select):
 #     return html.Div(msg)
 
 # Run the app
+
+
 if __name__ == '__main__':
     app.run_server()
