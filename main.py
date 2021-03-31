@@ -271,10 +271,11 @@ checklist_col = dbc.Col([
             dbc.Checklist(
                 id='checklist-input-1',
                 options=[
-                    {'label': 'CMPT 101', 'value': 1},
-                    {'label': 'MATH 114', 'value': 2},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
-                    {'label': 'STAT 151', 'value': 4},
+                    {'label': 'CMPT 103', 'value': 1},
+                    {'label': 'CMPT 200', 'value': 2},
+                    {'label': 'CMPT 201', 'value': 3},
+                    {'label': 'CMPT 395', 'value': 4},
+                    {'label': 'CMPT 496', 'value': 4},
                 ],
                 value=[1],
             )
@@ -286,10 +287,12 @@ checklist_col = dbc.Col([
             dbc.Checklist(
                 id='checklist-input-2',
                 options=[
-                    {'label': 'CMPT 101', 'value': 1},
-                    {'label': 'MATH 114', 'value': 2},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
-                    {'label': 'STAT 151', 'value': 4},
+                    {'label': 'CMPT 230', 'value': 1},
+                    {'label': 'CMPT 291', 'value': 2},
+                    {'label': 'CRWR 295', 'value': 3},
+                    {'label': 'CMPT 330', 'value': 4},
+                    {'label': 'CMPT 370', 'value': 5},
+                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 6},
                 ],
                 value=[1],
                 labelStyle={'display': 'block'}
@@ -374,26 +377,33 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
 
 # COURSE SELECTIONS DROPDOWN MULTISELECT
 @app.callback(
+    # OUTPUT
     Output("my-table", "data"),
 
+    # INPUT
     Input('add-to-planner-btn', 'n_clicks'),
+
     # [Input(f'checklist-input-{i}', 'value') for i in range(4)],
     [Input('checklist-input-0', 'value')],
 
+    # STATE
     State('checklist-input-0', 'options'),
+
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
 def update_my_table(n_clicks, checklist_vals, checks, selected_courses, radio_select):
-    print(checklist_vals, checks)
-    labels = [print(check) for check in checks if check['value'] in checklist_vals]
+    print(checklist_vals)
+    all_labels = [check['label'] for check in checks]
+    active_labels = [check['label'] for check in checks if check['value'] in checklist_vals]
+    print(active_labels)
 
-    # for check in checks:
-    #     if check['value'] in checklist_vals:
-    #         print(check)
+    for course in active_labels:
+        stud.add(course, radio_select.upper())
 
-    if len(checklist_vals) != 0:
-        pass
+    for course in all_labels:
+        if course not in active_labels:
+            stud.delete(course)
 
     if selected_courses is not None:
         [stud.add(c, radio_select.upper()) for c in selected_courses]
