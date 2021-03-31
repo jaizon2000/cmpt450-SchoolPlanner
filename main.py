@@ -31,7 +31,8 @@ course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c
 # Create the app and add extra styles
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP]
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    # external_stylesheets=[dbc.themes.LITERA],
 )
 
 
@@ -86,7 +87,7 @@ def makeCollapse(i, course):
     collapseList.getList().append(f"{i}")
     return dbc.Card(
         [
-            # CARD TITLE
+            # COURSE CARD TITLE
             dbc.CardHeader(
                 html.H2(
                     dbc.Button(
@@ -101,7 +102,7 @@ def makeCollapse(i, course):
             dbc.Collapse(
                 dbc.CardBody([
                     html.H5(f"{course.name}", className="card-title"),
-                    html.H6(f"{course.credit} Credits", className="card-subtitle"),
+                    html.H6(f"{course.credit} Credits", className="card-subtitle", style={'margin-bottom': '10px'}),
                     html.P(f"{course.desc}", className="card-text"),
                     dbc.CardFooter(f"{str(course.prereq)}"),
                 ]),
@@ -116,11 +117,8 @@ Column 1 - Input
 '''
 input_col = dbc.Col(
     dbc.Container([
-        # Title
-        html.H1("Inputs"),
-
         # FIND COURSES
-        html.H4("Find Courses"),
+        html.H4("Find Courses", style={'margin-bottom': '10px'}),
 
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
@@ -135,44 +133,54 @@ input_col = dbc.Col(
         ),
 
         # SELECT AND INPUT
-        html.H4("Mark selected course(s) as:"),
+        dbc.Card(
+            dbc.CardBody(
+                [
+                    html.H4("Mark selected course(s) as:", style={'margin-bottom': '10px'}),
 
-        # MULTI SELECTED COURSES
-        dbc.Row(dbc.Col([
-            dcc.Dropdown(
-                id='courses-input',
-                options=[
-                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
-                ],
-                placeholder='Select Courses...',
-                multi=True,
-            )
-        ])),
+                    # MULTI SELECTED COURSES
+                    dbc.Row(dbc.Col([
+                        dcc.Dropdown(
+                            id='courses-input',
+                            options=[
+                                {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
+                            ],
+                            placeholder='Select Courses...',
+                            multi=True,
+                        )
+                    ]),
+                        style={'margin-bottom': '10px'}),
 
-        # COURSE STATUS RADIO BTNS
-        dbc.Row(dbc.Col([
-            dbc.RadioItems(
-                id='status-radio',
-                options=[
-                    {'label': 'Completed', 'value': 'done'},
-                    {'label': 'Work In Progress', 'value': 'wip'},
-                    {'label': 'Planning to Take', 'value': 'planned'}
-                ],
-                value='done',
-                labelStyle={'display': 'block'}  # make new line option
+                    # COURSE STATUS RADIO BTNS
+                    dbc.Row(dbc.Col([
+                        dbc.RadioItems(
+                            id='status-radio',
+                            options=[
+                                {'label': 'Completed', 'value': 'done'},
+                                {'label': 'Work In Progress', 'value': 'wip'},
+                                {'label': 'Planning to Take', 'value': 'planned'}
+                            ],
+                            value='done',
+                            labelStyle={'display': 'block'}  # make new line option
+                        ),
+                        dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0,
+                                   style={'margin-top': '10px'}),
+
+                    ])),
+                ]
             ),
-            dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0),
-
-        ])),
+            style={'margin': '15px 0'}
+        ),
 
         # CHANGE VIEW BTNS
         html.B("Change view:"),
         html.Div([
             dbc.Row(
                 [
-                    dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0), width='auto'),
+                    dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
+                            width='auto', style={'margin-top': '10px'}),
                     dbc.Col(dbc.Button("Sunburst", color="secondary", id='view-btn-sun', n_clicks=0, disabled=True),
-                            width='auto'),
+                            width='auto', style={'margin-top': '10px'}),
                     html.Div(id='container-button-timestamp')
                 ],
                 justify='start',
@@ -182,7 +190,8 @@ input_col = dbc.Col(
 
         # dbc.Row(dbc.Col([])),
     ], ),
-    width=3
+    width=3,
+    style={'height': '100vh'}
 )
 
 '''
@@ -190,7 +199,7 @@ Column 2 - Data Tables
 '''
 data_col = dbc.Col(
     dbc.Container([
-        html.H1('My Progress'),
+        html.H2('My Progress'),
         dbc.Row(dbc.Col([
             html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
@@ -211,7 +220,7 @@ data_col = dbc.Col(
 
                 # table styling
                 style_table={
-                    'height': 400,
+                    'height': '100vh',
                     'overflowX': 'auto',  # scroll: https://bit.ly/3waaEII
                     'overflowY': 'auto',
                 },
@@ -236,9 +245,9 @@ data_col = dbc.Col(
             ),
         ])),
 
-        dbc.Row([
-            html.H2("Sunburst"),
-        ])
+        # dbc.Row([
+        #     html.H2("Sunburst"),
+        # ])
     ]), width=6
 )
 
@@ -246,13 +255,13 @@ data_col = dbc.Col(
 Column 3 - Checklist
 '''
 checklist_col = dbc.Col([
-    html.H1('Checklist'),
-    html.H4("Computer Science Major"),
+    html.H2('Checklist'),
+    html.H4("Computer Science Major", style={'margin-bottom': '10px'}),
 
     dbc.FormGroup([
         # Declaring Computer Science
         dbc.Row(dbc.Col([
-            html.H6('Declaring Computer Science'),
+            html.H6('Declaring Computer Science', style={'margin': '10px 0'}),
             dbc.Checklist(
                 options=[
                     {'label': 'CMPT 101', 'value': 1},
@@ -267,7 +276,7 @@ checklist_col = dbc.Col([
 
         # Computer Science Major
         dbc.Row(dbc.Col([
-            html.H6('Computer Science Major'),
+            html.H6('Computer Science Major', style={'margin': '10px 0'}),
             dbc.Checklist(
                 id='checklist-input-1',
                 options=[
@@ -283,7 +292,7 @@ checklist_col = dbc.Col([
 
         # Gaming Stream
         dbc.Row(dbc.Col([
-            html.H6('Gaming Stream'),
+            html.H6('Gaming Stream', style={'margin': '10px 0'}),
             dbc.Checklist(
                 id='checklist-input-2',
                 options=[
@@ -300,7 +309,7 @@ checklist_col = dbc.Col([
 
         # CREDIT CHECKLIST
         dbc.Row(dbc.Col([
-            html.H6('Credits'),
+            html.H6('Credits', style={'margin': '10px 0'}),
             dbc.Checklist(
                 id='checklist-input-3',
                 options=[
@@ -324,7 +333,7 @@ checklist_col = dbc.Col([
 MAIN: Add content
 '''
 app.layout = dbc.Container(
-    style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'height': '100vh'},
+    style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'height': '100vh', 'margin-top': '10px'},
     children=
     [
         dbc.Row(
