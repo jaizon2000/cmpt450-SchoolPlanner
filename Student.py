@@ -24,11 +24,11 @@ class Student:
             return f"{course.upper()} doesn't exist the database"
 
         # add to my courses, remove duplicates, reset index numbering
-        self.my_courses = self.my_courses.append(other, sort=True)
+        self.my_courses = pd.concat([self.my_courses, other], sort=True).drop_duplicates(subset=['id'], keep='last')
 
-        # change status of given course
+        # add/change status col of given course
         self.my_courses.loc[self.my_courses['id'] == course.upper(), 'status'] = status
-
+        print(self)
         return self.my_courses
 
     def getdf(self):
@@ -40,7 +40,7 @@ class Student:
 
 stud1 = Student()
 stud1.add("CMPT 201", "WIP")
-# stud.add("CMPT 201", "Planned")
+stud1.add("CMPT 201", "Planned")
 #
 # stud.add("CMPT 200", "Planned")
 # stud.add("CMPT 200", "Completed")
