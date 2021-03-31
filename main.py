@@ -305,9 +305,11 @@ checklist_col = dbc.Col([
                 id='checklist-input-3',
                 options=[
                     {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
-                    {'label': '1', 'value': 16},
-                    {'label': '1 OR MATH 125', 'value': 17},
-                    {'label': '1', 'value': 18},
+                    {'label': '72 Credits in Science Courses', 'value': 16},
+                    {'label': 'Junior (100 Level) Courses < 48 Credits OR MATH 125', 'value': 17},
+                    {'label': 'Transfer Credit < 60 Credits', 'value': 18},
+                    {'label': '60 Credits max in one course category', 'value': 19},
+                    {'label': '120 Credits in Total', 'value': 20},
                 ],
                 value=[1],
             )
