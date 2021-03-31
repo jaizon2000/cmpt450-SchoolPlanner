@@ -31,6 +31,12 @@ class Student:
         print(self)
         return self.my_courses
 
+    def delete(self, course):
+        i = self.my_courses[self.my_courses.id == course.upper()].index
+        self.my_courses = self.my_courses.drop(i)
+        print(self)
+        return self.my_courses
+
     def getdf(self, sort=True):
         if sort:
             return self.my_courses.sort_values(by='id')
@@ -48,6 +54,8 @@ stud1.add("CMPT 201", "Planned")
 stud1.add("CMPT 101", "Planned")
 
 stud1.add("CMPT 200", "Planned")
+stud1.delete("CMPT 201")
+
 # stud1.add("CMPT 200", "Completed")
 #
 # stud1.add("CMPT 305", "Planned")
