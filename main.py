@@ -116,10 +116,12 @@ Column 1 - Input
 '''
 input_col = dbc.Col(
     dbc.Container([
+        # Title
+        html.H1("Inputs"),
 
-        html.H1("Inputs"),  # Title
-
+        # FIND COURSES
         html.H4("Find Courses"),
+
         # Course Collapse Descriptions
         dbc.Row(dbc.Col([
             # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
@@ -132,6 +134,7 @@ input_col = dbc.Col(
             style={'overflow': 'scroll', 'height': '50vh', 'overflowX': 'hidden'},  # style container
         ),
 
+        # SELECT AND INPUT
         html.H4("Mark selected course(s) as:"),
 
         # MULTI SELECTED COURSES
@@ -148,7 +151,7 @@ input_col = dbc.Col(
 
         # COURSE STATUS RADIO BTNS
         dbc.Row(dbc.Col([
-            dcc.RadioItems(
+            dbc.RadioItems(
                 id='status-radio',
                 options=[
                     {'label': 'Completed', 'value': 'done'},
@@ -163,7 +166,7 @@ input_col = dbc.Col(
         ])),
 
         # CHANGE VIEW BTNS
-        html.H4("Change view:"),
+        html.B("Change view:"),
         html.Div([
             dbc.Row(
                 [
@@ -172,13 +175,13 @@ input_col = dbc.Col(
                             width='auto'),
                     html.Div(id='container-button-timestamp')
                 ],
-                justify='start'
+                justify='start',
             ),
 
         ]),
 
         # dbc.Row(dbc.Col([])),
-    ]),
+    ], ),
     width=3
 )
 
@@ -242,70 +245,76 @@ data_col = dbc.Col(
 '''
 Column 3 - Checklist
 '''
-checklist_col = dbc.Col(
-    dbc.Container([
-        html.H1('Computer Science Major Checklist'),
+checklist_col = dbc.Col([
+    html.H1('Checklist'),
+    html.H4("Computer Science Major"),
 
+    dbc.FormGroup([
         # Declaring Computer Science
         dbc.Row(dbc.Col([
-            html.B('Declaring Computer Science'),
-            dcc.Checklist(
+            html.H6('Declaring Computer Science'),
+            dbc.Checklist(
+                id='checklist-input-0',
                 options=[
-                    {'label': 'CMPT 101', 'value': 'check1'},
-                    {'label': 'MATH 114', 'value': 'check2'},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
-                    {'label': 'STAT 151', 'value': 'check4'},
+                    {'label': 'CMPT 101', 'value': 1},
+                    {'label': 'MATH 114', 'value': 2},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
+                    {'label': 'STAT 151', 'value': 4},
                 ],
-                value=['check1'],
-                labelStyle={'display': 'block'}
+                value=[1],
+                # labelStyle={'display': 'block'}
             )
         ])),
 
         # Computer Science Major
         dbc.Row(dbc.Col([
-            html.B('Computer Science Major'),
-            dcc.Checklist(
+            html.H6('Computer Science Major'),
+            dbc.Checklist(
+                id='checklist-input-1',
                 options=[
-                    {'label': 'CMPT 101', 'value': 'check1'},
-                    {'label': 'MATH 114', 'value': 'check2'},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
-                    {'label': 'STAT 151', 'value': 'check4'},
+                    {'label': 'CMPT 101', 'value': 1},
+                    {'label': 'MATH 114', 'value': 2},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
+                    {'label': 'STAT 151', 'value': 4},
                 ],
-                value=['check1'],
+                value=[1],
                 labelStyle={'display': 'block'}
             )
         ])),
 
         # Gaming Stream
         dbc.Row(dbc.Col([
-            html.B('Gaming Stream'),
-            dcc.Checklist(
+            html.H6('Gaming Stream'),
+            dbc.Checklist(
+                id='checklist-input-2',
                 options=[
-                    {'label': 'CMPT 101', 'value': 'check1'},
-                    {'label': 'MATH 114', 'value': 'check2'},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
-                    {'label': 'STAT 151', 'value': 'check4'},
+                    {'label': 'CMPT 101', 'value': 1},
+                    {'label': 'MATH 114', 'value': 2},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
+                    {'label': 'STAT 151', 'value': 4},
                 ],
-                value=['check1'],
+                value=[1],
                 labelStyle={'display': 'block'}
             )
         ])),
 
         dbc.Row(dbc.Col([
-            html.B('Credits'),
-            dcc.Checklist(
+            html.H6('Credits'),
+            dbc.Checklist(
+                id='checklist-input-3',
                 options=[
-                    {'label': 'CMPT 101', 'value': 'check1'},
-                    {'label': 'MATH 114', 'value': 'check2'},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 'check3'},
-                    {'label': 'STAT 151', 'value': 'check4'},
+                    {'label': 'CMPT 101', 'value': 1},
+                    {'label': 'MATH 114', 'value': 2},
+                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
+                    {'label': 'STAT 151', 'value': 4},
                 ],
-                value=['check1'],
+                value=[1],
                 labelStyle={'display': 'block'}  # make new line per check list
             )
         ])),
 
-    ]), width=3
+    ]), ],
+    width=3
 )
 
 '''
@@ -324,7 +333,7 @@ app.layout = html.Div(style={'backgroundColor': '#00000', 'overflowX': 'hidden'}
                                   # Column 3 - Checklist
                                   checklist_col,
 
-                              ]
+                              ],
                           ),
 
                       ],
@@ -369,10 +378,12 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     Output("my-table", "data"),
 
     Input('add-to-planner-btn', 'n_clicks'),
+    Input('checklist', 'values'),
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
-def update_my_table(n_clicks, selected_courses, radio_select):
+def update_my_table(n_clicks, checklist_vals, selected_courses, radio_select):
+    print(checklist_vals)
     if selected_courses is not None:
         [stud.add(c, radio_select.upper()) for c in selected_courses]
 

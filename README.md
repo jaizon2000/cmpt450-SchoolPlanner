@@ -1,8 +1,22 @@
 # README.md
 
+###### 🔗 Useful links
+
+[Dash Callbacks](https://dash.plotly.com/basic-callbacks#dash-app-state) 
+
+[Filtering Data Tables](https://dash.plotly.com/datatable/callbacks) 
+
+###### 📑 Documentation Links
+
+[Plotly Dash](https://dash.plotly.com/) 
+
+[Dash Bootstrap Components](https://dash-bootstrap-components.opensource.faculty.ai/docs/components/layout/) 
+
+[Pandas](https://pandas.pydata.org/docs/user_guide/10min.html) 
+
 ## Inputs Column
 
-### Dropdown multiselect
+### Dropdown Multiselect
 
 #### Output
 
@@ -25,10 +39,23 @@
 
 ## Data Table & Sunburst Column
 
+- [ ] Export current data table
+- [ ] Import a data table (csv, json)
+
 ### Data table
 
 data table changes -> change checklist
 
-change in checklist -> change data table
+
 
 ## Checklist Column
+
+[Dash Bootstrap Checklist Input](https://bit.ly/3sDJ8Bk) 
+
+### change in checklist -> change data table
+
+#### Input
+
+#### Output
+
+#### State
