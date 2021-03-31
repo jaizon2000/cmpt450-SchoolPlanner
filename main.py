@@ -164,12 +164,17 @@ input_col = dbc.Col(
 
         # CHANGE VIEW BTNS
         html.H4("Change view:"),
-        dbc.Container([
-            dbc.Row([
-                dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
-                dbc.Button("Sunburst", color="primary", id='view-btn-sun', n_clicks=0),
-                html.Div(id='container-button-timestamp')
-            ]),
+        html.Div([
+            dbc.Row(
+                [
+                    dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0), width='auto'),
+                    dbc.Col(dbc.Button("Sunburst", color="secondary", id='view-btn-sun', n_clicks=0, disabled=True),
+                            width='auto'),
+                    html.Div(id='container-button-timestamp')
+                ],
+                justify='start'
+            ),
+
         ]),
 
         # dbc.Row(dbc.Col([])),
