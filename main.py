@@ -207,7 +207,6 @@ input_col = dbc.Col(
         # dbc.Row(dbc.Col([])),
     ],
     width=3,
-    style={'height': '100vh'}
 )
 
 '''
@@ -236,7 +235,7 @@ data_col = dbc.Col(
 
                 # table styling
                 style_table={
-                    'height': '100vh',
+                    'maxHeight': '100vh',
                     'overflowX': 'auto',  # scroll: https://bit.ly/3waaEII
                     'overflowY': 'auto',
                 },
