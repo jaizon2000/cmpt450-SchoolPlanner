@@ -26,7 +26,7 @@ df_dict = df.to_dict('records')
 stud = Student()
 stud_df = df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
 # print(stud_df, df)
-course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in df_dict]
+course_classes_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in df_dict]
 
 # Create the app and add extra styles
 app = dash.Dash(
@@ -80,7 +80,7 @@ class Bools():
 bools = Bools([None for i in range(len(df))])
 
 
-def makeCollapse(i, course):
+def makeCollapse(i, course, style_val=None):
     # course_id = course.id.split(' ')
 
     # collapseList.append(f"{course_id[0]}-{course_id[1]}-collapse-toggle")
@@ -108,28 +108,42 @@ def makeCollapse(i, course):
                 ]),
                 id=f"collapse-{i}",
             ),
-        ]
+        ],
+        style=style_val if style_val is not None else style_val,
+        id=f"collapse-card-{i}",
     )
 
 
+print(df_dict)
 '''
 Column 1 - Input
 '''
 input_col = dbc.Col(
-    dbc.Container([
+    [
         # FIND COURSES
         html.H4("Find Courses", style={'margin-bottom': '10px'}),
+        dbc.Row(
+            dbc.Input(
+                id='course-search-input',
+                placeholder='Type a course id, name, or description',
+                type='search',
+            )
+            , style={'margin': '10px 0px'}),
 
-        # Course Collapse Descriptions
-        dbc.Row(dbc.Col([
-            # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
-            makeCollapse(i, course_class_list[i]) for i in range(len(df))
-            # makeCollapse(1, course_class_list[3]),
-            # makeCollapse(2, course_class_list[2]),
-            # makeCollapse(3, course_class_list[1]),
-            # makeCollapse(i) for i in course_class_list
-        ]),
-            style={'overflow': 'scroll', 'height': '50vh', 'overflowX': 'hidden'},  # style container
+        # COURSE ACCORDIONS
+        dbc.Row(dbc.Col(
+            [
+                # makeCollapse(c + 1, course_class_list[c]) for c in range(len(course_class_list))
+                makeCollapse(i, course_classes_list[i]) for i in range(len(df))
+                # makeCollapse(1, course_class_list[3]),
+                # makeCollapse(2, course_class_list[2]),
+                # makeCollapse(3, course_class_list[1]),
+                # makeCollapse(i) for i in course_class_list
+            ],
+            id='courses-results-container',
+        ),
+
+            style={'overflow': 'scroll', 'maxHeight': '50vh', 'overflowX': 'hidden'},  # style container
         ),
 
         # SELECT AND INPUT
@@ -146,6 +160,7 @@ input_col = dbc.Col(
                                 {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
                             ],
                             placeholder='Select Courses...',
+                            value=[],
                             multi=True,
                         )
                     ]),
@@ -169,27 +184,28 @@ input_col = dbc.Col(
                     ])),
                 ]
             ),
-            style={'margin': '15px 0'}
+            style={'margin': '5px 0'}
         ),
 
         # CHANGE VIEW BTNS
-        html.B("Change view:"),
-        html.Div([
+        dbc.Container([
+            html.B("Change view:"),
             dbc.Row(
                 [
                     dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
-                            width='auto', style={'margin-top': '10px'}),
+                            width='auto', ),
                     dbc.Col(dbc.Button("Sunburst", color="secondary", id='view-btn-sun', n_clicks=0, disabled=True),
-                            width='auto', style={'margin-top': '10px'}),
+                            width='auto', ),
                     html.Div(id='container-button-timestamp')
                 ],
                 justify='start',
+                style={'margin-top': '10px'},
             ),
 
         ]),
 
         # dbc.Row(dbc.Col([])),
-    ], ),
+    ],
     width=3,
     style={'height': '100vh'}
 )
@@ -198,7 +214,7 @@ input_col = dbc.Col(
 Column 2 - Data Tables
 '''
 data_col = dbc.Col(
-    dbc.Container([
+    [
         html.H2('My Progress'),
         dbc.Row(dbc.Col([
             html.H2("Table"),
@@ -248,7 +264,7 @@ data_col = dbc.Col(
         # dbc.Row([
         #     html.H2("Sunburst"),
         # ])
-    ]), width=6
+    ], width=6
 )
 
 '''
@@ -269,7 +285,7 @@ checklist_col = dbc.Col([
                     {'label': 'MATH 120 OR MATH 125', 'value': 3},
                     {'label': 'STAT 151', 'value': 4},
                 ],
-                value=[1],
+                value=[],
                 id='checklist-input-0',
             )
         ])),
@@ -286,7 +302,7 @@ checklist_col = dbc.Col([
                     {'label': 'CMPT 395', 'value': 8},
                     {'label': 'CMPT 496', 'value': 9},
                 ],
-                value=[5],
+                value=[],
             )
         ])),
 
@@ -296,12 +312,12 @@ checklist_col = dbc.Col([
             dbc.Checklist(
                 id='checklist-input-2',
                 options=[
-                    {'label': 'CMPT 230', 'value': 10},
-                    {'label': 'CMPT 291', 'value': 11},
-                    {'label': 'CRWR 295', 'value': 12},
-                    {'label': 'CMPT 330', 'value': 13},
-                    {'label': 'CMPT 370', 'value': 14},
-                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 15},
+                    {'label': 'CMPT 230', 'value': '10'},
+                    {'label': 'CMPT 291', 'value': '11'},
+                    {'label': 'CRWR 295', 'value': '12'},
+                    {'label': 'CMPT 330', 'value': '13'},
+                    {'label': 'CMPT 370', 'value': '14'},
+                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
                 ],
                 value=[10],
             )
@@ -333,7 +349,7 @@ checklist_col = dbc.Col([
 MAIN: Add content
 '''
 app.layout = dbc.Container(
-    style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'height': '100vh', 'margin-top': '10px'},
+    style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'margin-top': '10px'},
     children=
     [
         dbc.Row(
@@ -355,6 +371,27 @@ app.layout = dbc.Container(
 )
 
 
+# FILTER COURSES - SEARCH
+@app.callback(
+    [Output(f'collapse-card-{i}', 'style') for i in range(len(df))],
+    Input('course-search-input', 'value'),
+    [State(f"collapse-{i}", "is_open") for i in range(len(df))],  # course toggles
+
+)
+def update_course_results(search_value, *args):
+    collapse_ids = [] # store num id of those to show
+    i = 0
+    if search_value is not None:
+        # Find
+        for course in course_classes_list:  # For each Course class
+            if search_value.upper() in course.id:
+                print(search_value)
+                collapse_ids.append(i)
+            i += 1
+
+    return [{'display': 'block' if toggle in collapse_ids else 'none'} for toggle in range(len(df))]
+
+
 # COURSE ACCORDIONS
 @app.callback(
     # OUTPUTS - should come first
@@ -362,17 +399,12 @@ app.layout = dbc.Container(
 
     # INPUTS - comes after outputs
     [Input(f"group-{i}-toggle", "n_clicks") for i in range(len(df))],  # course toggles
+
     [State(f"collapse-{i}", "is_open") for i in range(len(df))],  # course toggles
 )
-def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21,
-                     n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34, n35, n36, n37, n38, n39,
-
-                     is_open1, is_open2, is_open3, is_open4, is_open5, is_open6, is_open7, is_open8, is_open9,
-                     is_open10, is_open11, is_open12, is_open13, is_open14, is_open15, is_open16, is_open17, is_open18,
-                     is_open19, is_open20, is_open21, is_open22, is_open23, is_open24, is_open25, is_open26, is_open27,
-                     is_open28, is_open29, is_open30, is_open31, is_open32, is_open33, is_open34, is_open35, is_open36,
-                     is_open37, is_open38, is_open39):
-    ctx = dash.callback_context
+def toggle_accordion(*args):
+    # advanced callbacks: https://bit.ly/3wbTYAB
+    ctx = dash.callback_context  # seek the component where user clicks
 
     if not ctx.triggered:
         return [False for i in range(len(df))]
@@ -396,33 +428,46 @@ def toggle_accordion(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
     # INPUT
     Input('add-to-planner-btn', 'n_clicks'),
 
-    [Input(f'checklist-input-{i}', 'value') for i in range(4)],
+    # [Input(f'checklist-input-{i}', 'value') for i in range(4)],
 
     # STATE
-    [State(f'checklist-input-{i}', 'options') for i in range(4)],
+    # [State(f'checklist-input-{i}', 'options') for i in range(4)],
 
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
-def update_my_table(n_clicks, checklist_vals1, checklist_vals2, checklist_vals3, checklist_vals4,
-                    checks1, checks2, checks3, checks4, selected_courses, radio_select):
-    print(checklist_vals1)
+def update_my_table(n_clicks,
+                    # checklist_vals1, checklist_vals2, checklist_vals3, checklist_vals4,
+                    # checks1, checks2, checks3, checks4,
+                    selected_courses, radio_select):
+    # checks = checks1 + checks2 + checks3 + checks4
+    # checklist_vals = list(set(checklist_vals1 + checklist_vals2 + checklist_vals3 + checklist_vals4))
+    # + checklist_vals3 + checklist_vals4
+    # print(checklist_vals)
 
-    checks = checks1 + checks2 + checks3 + checks4
-    checklist_vals = checklist_vals1 + checklist_vals2 + checklist_vals3 + checklist_vals4
+    ctx = dash.callback_context  # seek the component where user clicks
 
-    all_labels = [check['label'] for check in checks]
-    active_labels = [check['label'] for check in checks if check['value'] in checklist_vals]
+    if not ctx.triggered:
+        pass
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
 
-    print(active_labels)
+        print(button_id)
 
-    for course in active_labels:
-        stud.add(course, radio_select.upper())
+    # all_labels = [check['label'] for check in checks]
+    # active_labels = [check['label'] for check in checks if check['value'] in checklist_vals]
 
-    for course in all_labels:
-        if course not in active_labels:
-            stud.delete(course)
+    # print(all_labels)
+    # print(active_labels)
+    #
+    # for course in active_labels:
+    #     stud.add(course, radio_select.upper())
+    #
+    # for course in all_labels:
+    #     if course not in active_labels:
+    #         stud.delete(course)
 
+    # MULTISELECT DROPDOWN INPUT
     if selected_courses is not None:
         [stud.add(c, radio_select.upper()) for c in selected_courses]
 

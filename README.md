@@ -12,9 +12,38 @@
 
 [Dash Bootstrap Components](https://dash-bootstrap-components.opensource.faculty.ai/docs/components/layout/) 
 
-[Pandas](https://pandas.pydata.org/docs/user_guide/10min.html) 
+[Pandas](http://pandas.pydata.org/docs/user_guide/10min.html) 
 
 ## Inputs Column
+### Search courses
+
+#### Output
+
+`courses-results-container` - 
+
+#### Input
+
+`course-search-input` - 
+
+#### State
+
+### Card Toggles
+
+#### Output
+
+`collapse-#` - collapse tab
+
+#### Input
+
+`group=#-toggle` - card group toggle
+
+`*args*` Having an [unknown number of arguments](https://bit.ly/3syoB0Z), [link 2](https://bit.ly/3fr7Kt9)
+
+#### State
+
+`collapse-#` - collapse tab
+
+------
 
 ### Dropdown Multiselect
 
@@ -28,7 +57,9 @@
 
 #### State
 
-[States](https://bit.ly/3uePXK9) allow user to input before running the main action
+**[States](https://bit.ly/3uePXK9) allow user to input before running the main action**
+
+So instead of getting the input as soon as there’s a change, the input is only gotten when the `Input` is triggered.
 
 `status-radio` - status of selected courses
 
