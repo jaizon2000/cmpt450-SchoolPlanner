@@ -114,7 +114,6 @@ def makeCollapse(i, course, style_val=None):
     )
 
 
-print(df_dict)
 '''
 Column 1 - Input
 '''
@@ -378,12 +377,20 @@ app.layout = dbc.Container(
 
 )
 def update_course_results(search_value, *args):
-    collapse_ids = [] # store num id of those to show
+    collapse_ids = []  # store num id of those to show
+    search_value = search_value.upper()
+
+    # If search is none, show all
+    if search_value is None:
+        collapse_ids = [i for i in range(len(df))]
+
     i = 0
     if search_value is not None:
         # Find
         for course in course_classes_list:  # For each Course class
-            if search_value.upper() in course.id:
+            if search_value in course.id \
+                    or search_value in course.desc.upper() \
+                    or search_value in course.name.upper():
                 print(search_value)
                 collapse_ids.append(i)
             i += 1

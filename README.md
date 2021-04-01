@@ -19,6 +19,8 @@
 
 #### Output
 
+`collapse-card-{i}` on its `style` 
+
 `courses-results-container` - 
 
 #### Input
