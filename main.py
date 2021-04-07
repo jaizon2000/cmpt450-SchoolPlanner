@@ -485,35 +485,35 @@ def update_my_table(n_clicks,
 @app.callback(
     # [Output(f'checklist-input-{i}', 'value') for i in range(4)],
     # Output('container-button-timestamp', 'children'),
-    [Output(f'checklist-input-{i}', 'value') for i in range(2)],
+    [Output(f'checklist-input-{i}', 'value') for i in range(4)],
 
     # Output(f'checklist-input-{1}', 'value'),
     # Output(f'checklist-input-{1}', 'options'),
 
     Input('my-table', 'data'),
-    [Input(f'checklist-input-{1}', 'options')],
+    [Input(f'checklist-input-{i}', 'options') for i in range(4)],
 
 )
 def update_checklist(
         data_table,
-        check_opt,
+        check_opt0, check_opt1, check_opt2, check_opt3,
 ):
-    print(check_opt)
+    print(check_opt0)
 
     print(data_table)
 
     # get current ctx triggered
     # if button clicked value id is == to that id, change value of that id triggere
     checked_values = []
-    labels = {check['label']: check['value'] for check in check_opt}
+    labels = {check['label']: check['value'] for check in check_opt0 + check_opt1 + check_opt2 + check_opt3}
 
     for c in data_table:
         value = []
         # for courses in data table, get the checklist value for it
         [value.append(labels[label]) for label in labels.keys() if label == c['id']]
         checked_values += value
-        print(value)
-    return checked_values, checked_values
+
+    return [checked_values for i in range(4)]
 
 
 # CHANGE VIEW
