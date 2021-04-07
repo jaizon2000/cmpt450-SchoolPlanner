@@ -70,7 +70,7 @@ So instead of getting the input as soon as there’s a change, the input is only
 - The `Inputs` in `@app.callback` 
   - the action function parameters (function below below `@app.callback`) are in the order of the input in `@app.callback`.
 
-## Data Table & Sunburst Column
+## Data Table
 
 - [ ] Export current data table
 - [ ] Import a data table (csv, json)
@@ -79,7 +79,15 @@ So instead of getting the input as soon as there’s a change, the input is only
 
 data table changes -> change checklist
 
+#### Output
 
+check-list-input-X, value
+
+#### Input
+
+my-table
+
+#### State
 
 ## Checklist Column
 
@@ -99,4 +107,4 @@ data table changes -> change checklist
 
 `checklist` - 
 
-#### ~~State~~
+#### State

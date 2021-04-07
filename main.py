@@ -215,7 +215,7 @@ data_col = dbc.Col(
     [
         html.H2('My Progress'),
         dbc.Row(dbc.Col([
-            html.H2("Table"),
+            # html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
             # datatable basic: https://bit.ly/3fmu0EB
             dash_table.DataTable(
@@ -272,75 +272,76 @@ checklist_col = dbc.Col([
     html.H2('Checklist'),
     html.H4("Computer Science Major", style={'margin-bottom': '10px'}),
 
-    dbc.FormGroup([
-        # Declaring Computer Science
-        dbc.Row(dbc.Col([
-            html.H6('Declaring Computer Science', style={'margin': '10px 0'}),
-            dbc.Checklist(
-                options=[
-                    {'label': 'CMPT 101', 'value': 1},
-                    {'label': 'MATH 114', 'value': 2},
-                    {'label': 'MATH 120 OR MATH 125', 'value': 3},
-                    {'label': 'STAT 151', 'value': 4},
-                ],
-                value=[],
-                id='checklist-input-0',
-            )
-        ])),
+    dbc.FormGroup(
+        id='checklist',
+        children=
+        [
+            # Declaring Computer Science
+            dbc.Row(dbc.Col([
+                html.H6('Declaring Computer Science', style={'margin': '10px 0'}),
+                dbc.Checklist(
+                    options=[
+                        {'label': 'CMPT 101', 'value': 1},
+                        {'label': 'MATH 114', 'value': 2},
+                        {'label': 'MATH 120 OR MATH 125', 'value': 3},
+                        {'label': 'STAT 151', 'value': 4},
+                    ],
+                    value=[],
+                    id='checklist-input-0',
+                )
+            ])),
 
-        # Computer Science Major
-        dbc.Row(dbc.Col([
-            html.H6('Computer Science Major', style={'margin': '10px 0'}),
-            dbc.Checklist(
-                id='checklist-input-1',
-                options=[
-                    {'label': 'CMPT 103', 'value': 5},
-                    {'label': 'CMPT 200', 'value': 6},
-                    {'label': 'CMPT 201', 'value': 7},
-                    {'label': 'CMPT 395', 'value': 8},
-                    {'label': 'CMPT 496', 'value': 9},
-                ],
-                value=[],
-            )
-        ])),
+            # Computer Science Major
+            dbc.Row(dbc.Col([
+                html.H6('Computer Science Major', style={'margin': '10px 0'}),
+                dbc.Checklist(
+                    id='checklist-input-1',
+                    options=[
+                        {'label': 'CMPT 103', 'value': 5},
+                        {'label': 'CMPT 200', 'value': 6},
+                        {'label': 'CMPT 201', 'value': 7},
+                        {'label': 'CMPT 395', 'value': 8},
+                        {'label': 'CMPT 496', 'value': 9},
+                    ],
+                    value=[],
+                )
+            ])),
 
-        # Gaming Stream
-        dbc.Row(dbc.Col([
-            html.H6('Gaming Stream', style={'margin': '10px 0'}),
-            dbc.Checklist(
-                id='checklist-input-2',
-                options=[
-                    {'label': 'CMPT 230', 'value': '10'},
-                    {'label': 'CMPT 291', 'value': '11'},
-                    {'label': 'CRWR 295', 'value': '12'},
-                    {'label': 'CMPT 330', 'value': '13'},
-                    {'label': 'CMPT 370', 'value': '14'},
-                    {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
-                ],
-                value=[10],
-            )
-        ])),
+            # Gaming Stream
+            dbc.Row(dbc.Col([
+                html.H6('Gaming Stream', style={'margin': '10px 0'}),
+                dbc.Checklist(
+                    id='checklist-input-2',
+                    options=[
+                        {'label': 'CMPT 230', 'value': '10'},
+                        {'label': 'CMPT 291', 'value': '11'},
+                        {'label': 'CRWR 295', 'value': '12'},
+                        {'label': 'CMPT 330', 'value': '13'},
+                        {'label': 'CMPT 370', 'value': '14'},
+                        {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
+                    ],
+                    value=[10],
+                )
+            ])),
 
-        # CREDIT CHECKLIST
-        dbc.Row(dbc.Col([
-            html.H6('Credits', style={'margin': '10px 0'}),
-            dbc.Checklist(
-                id='checklist-input-3',
-                options=[
-                    {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
-                    {'label': '72 Credits in Science Courses', 'value': 16},
-                    {'label': 'Junior (100 Level) Courses < 48 Credits OR MATH 125', 'value': 17},
-                    {'label': 'Transfer Credit < 60 Credits', 'value': 18},
-                    {'label': '60 Credits max in one course category', 'value': 19},
-                    {'label': '120 Credits in Total', 'value': 20},
-                ],
-                value=[1],
-            )
-        ])),
-
-    ]), ],
+            # CREDIT CHECKLIST
+            dbc.Row(dbc.Col([
+                html.H6('Credits', style={'margin': '10px 0'}),
+                dbc.Checklist(
+                    id='checklist-input-3',
+                    options=[
+                        {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
+                        {'label': '72 Credits in Science Courses', 'value': 16},
+                        {'label': 'Junior (100 Level) Courses < 48 Credits OR MATH 125', 'value': 17},
+                        {'label': 'Transfer Credit < 60 Credits', 'value': 18},
+                        {'label': '60 Credits max in one course category', 'value': 19},
+                        {'label': '120 Credits in Total', 'value': 20},
+                    ],
+                    value=[1],
+                )
+            ])),
+        ])],
     width=3,
-    id='checklist',
 )
 
 '''
@@ -378,7 +379,6 @@ app.layout = dbc.Container(
 )
 def update_course_results(search_value, *args):
     collapse_ids = []  # store num id of those to show
-    search_value = search_value.upper()
 
     # If search is none, show all
     if search_value is None:
@@ -386,6 +386,8 @@ def update_course_results(search_value, *args):
 
     i = 0
     if search_value is not None:
+        search_value = search_value.upper()
+
         # Find
         for course in course_classes_list:  # For each Course class
             if search_value in course.id \
@@ -478,6 +480,53 @@ def update_my_table(n_clicks,
         [stud.add(c, radio_select.upper()) for c in selected_courses]
 
     return stud.getdf().to_dict('records')
+
+
+@app.callback(
+    # [Output(f'checklist-input-{i}', 'value') for i in range(4)],
+    # Output('container-button-timestamp', 'children'),
+    Output(f'checklist', 'value'),
+
+    # Output(f'checklist-input-{1}', 'value'),
+    # Output(f'checklist-input-{1}', 'options'),
+
+    Input('my-table', 'data'),
+    Input(f'checklist-input-{1}', 'value'),
+    Input(f'checklist-input-{1}', 'options'),
+
+)
+def update_checklist(
+        data_table,
+        check,
+        check_opt,
+):
+    print(check, check_opt)
+
+    print(data_table)
+
+    ctx = dash.callback_context  # seek the component where user clicks
+
+    if not ctx.triggered:
+        pass
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
+
+    print(button_id)
+
+    # get current ctx triggered
+    # if button clicked value id is == to that id, change value of that id triggere
+    checked_values = []
+    labels = {check['label']: check['value'] for check in check_opt}
+
+    for c in data_table:
+        # for courses in data table, get the checklist value for it
+        [checked_values.append(labels[label]) for label in labels.keys() if label == c['id']]
+
+    for c in check_opt:
+        if c['value'] == check:
+            checked_values.append(c['value'])
+
+    return checked_values
 
 
 # CHANGE VIEW
