@@ -485,33 +485,22 @@ def update_my_table(n_clicks,
 @app.callback(
     # [Output(f'checklist-input-{i}', 'value') for i in range(4)],
     # Output('container-button-timestamp', 'children'),
-    Output(f'checklist', 'value'),
+    [Output(f'checklist-input-{i}', 'value') for i in range(2)],
 
     # Output(f'checklist-input-{1}', 'value'),
     # Output(f'checklist-input-{1}', 'options'),
 
     Input('my-table', 'data'),
-    Input(f'checklist-input-{1}', 'value'),
-    Input(f'checklist-input-{1}', 'options'),
+    [Input(f'checklist-input-{1}', 'options')],
 
 )
 def update_checklist(
         data_table,
-        check,
         check_opt,
 ):
-    print(check, check_opt)
+    print(check_opt)
 
     print(data_table)
-
-    ctx = dash.callback_context  # seek the component where user clicks
-
-    if not ctx.triggered:
-        pass
-    else:
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
-
-    print(button_id)
 
     # get current ctx triggered
     # if button clicked value id is == to that id, change value of that id triggere
@@ -519,14 +508,12 @@ def update_checklist(
     labels = {check['label']: check['value'] for check in check_opt}
 
     for c in data_table:
+        value = []
         # for courses in data table, get the checklist value for it
-        [checked_values.append(labels[label]) for label in labels.keys() if label == c['id']]
-
-    for c in check_opt:
-        if c['value'] == check:
-            checked_values.append(c['value'])
-
-    return checked_values
+        [value.append(labels[label]) for label in labels.keys() if label == c['id']]
+        checked_values += value
+        print(value)
+    return checked_values, checked_values
 
 
 # CHANGE VIEW
