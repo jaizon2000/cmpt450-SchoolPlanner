@@ -510,7 +510,7 @@ def update_checklist(
     for c in data_table:
         value = []
         # for courses in data table, get the checklist value for it
-        [value.append(labels[label]) for label in labels.keys() if label == c['id']]
+        [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == "DONE"]
         checked_values += value
 
     return [checked_values for i in range(4)]
