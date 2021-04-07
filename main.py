@@ -172,7 +172,8 @@ input_col = dbc.Col(
                             options=[
                                 {'label': 'Completed', 'value': 'done'},
                                 {'label': 'Work In Progress', 'value': 'wip'},
-                                {'label': 'Planning to Take', 'value': 'planned'}
+                                {'label': 'Planning to Take', 'value': 'planned'},
+                                {'label': 'Remove from Table', 'value': 'remove'},
                             ],
                             value='done',
                             labelStyle={'display': 'block'}  # make new line option
@@ -445,39 +446,17 @@ def toggle_accordion(*args):
     State('status-radio', 'value'),
 )
 def update_my_table(n_clicks,
-                    # checklist_vals1, checklist_vals2, checklist_vals3, checklist_vals4,
-                    # checks1, checks2, checks3, checks4,
-                    selected_courses, radio_select):
-    # checks = checks1 + checks2 + checks3 + checks4
-    # checklist_vals = list(set(checklist_vals1 + checklist_vals2 + checklist_vals3 + checklist_vals4))
-    # + checklist_vals3 + checklist_vals4
-    # print(checklist_vals)
-
-    ctx = dash.callback_context  # seek the component where user clicks
-
-    if not ctx.triggered:
-        pass
-    else:
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]  # group-X-toggle
-
-        print(button_id)
-
-    # all_labels = [check['label'] for check in checks]
-    # active_labels = [check['label'] for check in checks if check['value'] in checklist_vals]
-
-    # print(all_labels)
-    # print(active_labels)
-    #
-    # for course in active_labels:
-    #     stud.add(course, radio_select.upper())
-    #
-    # for course in all_labels:
-    #     if course not in active_labels:
-    #         stud.delete(course)
+                    selected_courses, radio_select
+                    ):
+    print(radio_select)
 
     # MULTISELECT DROPDOWN INPUT
     if selected_courses is not None:
-        [stud.add(c, radio_select.upper()) for c in selected_courses]
+        if radio_select == 'remove':
+            [stud.remove(c) for c in selected_courses]
+
+        else:
+            [stud.add(c, radio_select.upper()) for c in selected_courses]
 
     return stud.getdf().to_dict('records')
 

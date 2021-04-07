@@ -31,7 +31,7 @@ class Student:
         # print(self)
         return self.my_courses
 
-    def delete(self, course):
+    def remove(self, course):
         i = self.my_courses[self.my_courses.id == course.upper()].index
         self.my_courses = self.my_courses.drop(i)
         # print(self)
@@ -54,7 +54,7 @@ stud1.add("CMPT 201", "Planned")
 stud1.add("CMPT 101", "Planned")
 
 stud1.add("CMPT 200", "Planned")
-stud1.delete("CMPT 201")
+stud1.remove("CMPT 201")
 
 # stud1.add("CMPT 200", "Completed")
 #
