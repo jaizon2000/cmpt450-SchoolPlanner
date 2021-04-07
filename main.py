@@ -214,7 +214,7 @@ Column 2 - Data Tables
 '''
 data_col = dbc.Col(
     [
-        html.H2('My Progress'),
+        html.H4('My Progress'),
         dbc.Row(dbc.Col([
             # html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
@@ -270,8 +270,8 @@ data_col = dbc.Col(
 Column 3 - Checklist
 '''
 checklist_col = dbc.Col([
-    html.H2('Checklist'),
-    html.H4("Computer Science Major", style={'margin-bottom': '10px'}),
+    html.H4('Checklist'),
+    html.H5("Computer Science Major", style={'margin-bottom': '10px'}),
 
     dbc.FormGroup(
         id='checklist',
