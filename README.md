@@ -135,11 +135,13 @@ data table changes -> change checklist
 
 `major-stream-checklist` - checklist stream container
 
+`general-stream`
+
 `game-stream`
 
 `sys-info-stream` 
 
-`satabase-stream`
+`database-stream`
 
 ``
 

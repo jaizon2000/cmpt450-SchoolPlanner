@@ -207,7 +207,8 @@ input_col = dbc.Col(
                 ),
                 style={'margin': '5px 0', }
             )),
-            style={'maxHegiht': '30vh', 'overflowY': 'auto'}),
+            style={'maxHeight': '35vh', 'overflowY': 'scroll'}
+        ),
 
         # CHANGE VIEW BTNS
         dbc.Container([
@@ -215,7 +216,7 @@ input_col = dbc.Col(
             dbc.Row(
                 [
                     dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
-                            width='auto', style={'margin-right':'10px'}),
+                            width='auto', style={'margin-right': '10px'}),
                     dbc.Col(dbc.Button("Sunburst", color="secondary", id='view-btn-sun', n_clicks=0, disabled=True),
                             width='auto', ),
                     html.Div(id='container-button-timestamp')
@@ -350,33 +351,36 @@ checklist_col = dbc.Col([
             ])),
 
             # Gaming Stream
-            dbc.Row(dbc.Col([
-                html.H6('Gaming Stream', style={'margin': '10px 0'}),
-                dbc.Checklist(
-                    id='checklist-input-2',
-                    options=[
-                        {'label': 'CMPT 230', 'value': '10'},
-                        {'label': 'CMPT 291', 'value': '11'},
-                        {'label': 'CRWR 295', 'value': '12'},
-                        {'label': 'CMPT 330', 'value': '13'},
-                        {'label': 'CMPT 370', 'value': '14'},
-                        {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
-                    ],
-                    value=[],
-                )
-            ])),
+            dbc.Row(
+                id='major-stream-checklist',
+                children=dbc.Col(
+                    [
+                        html.H6('Gaming Stream', style={'margin': '10px 0'}),
+                        dbc.Checklist(
+                            id='checklist-input-2',
+                            options=[
+                                {'label': 'CMPT 230', 'value': '10'},
+                                {'label': 'CMPT 291', 'value': '11'},
+                                {'label': 'CRWR 295', 'value': '12'},
+                                {'label': 'CMPT 330', 'value': '13'},
+                                {'label': 'CMPT 370', 'value': '14'},
+                                {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
+                            ],
+                            value=[],
+                        )
+                    ])),
 
             # CREDIT CHECKLIST
             dbc.Row(dbc.Col([
                 html.H6('Credits', style={'margin': '10px 0'}),
                 dbc.Checklist(
                     options=[
-                        {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
-                        {'label': '72 Credits in Science Courses', 'value': 16},
-                        {'label': 'Junior (100 Level) Courses < 48 Credits OR MATH 125', 'value': 17},
-                        {'label': 'Transfer Credit < 60 Credits', 'value': 18},
-                        {'label': '60 Credits max in one course category', 'value': 19},
-                        {'label': '120 Credits in Total', 'value': 20},
+                        {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 18},
+                        {'label': '72 Credits in Science Courses', 'value': 19},
+                        {'label': 'Junior (100 Level) Courses < 48 Credits OR MATH 125', 'value': 20},
+                        {'label': 'Transfer Credit < 60 Credits', 'value': 21},
+                        {'label': '60 Credits max in one course category', 'value': 22},
+                        {'label': '120 Credits in Total', 'value': 23},
                     ],
                     id='checklist-input-3',
                     value=[],
@@ -384,7 +388,7 @@ checklist_col = dbc.Col([
                 )
             ], ), ),
         ],
-        style={'maxHeight': '80vh', 'overflowY': 'auto', 'overflowX': 'hidden'}
+        style={'maxHeight': '80vh', 'overflowY': 'auto', 'padding': '0 15px'},
     )],
     width=3,
 
@@ -557,10 +561,10 @@ def update_my_table(n_clicks0,
 # CHANGING STREAM CHECKLIST
 @app.callback(
     Output('major-stream-checklist', 'children'),
-
-    Input('major-stream', 'value')
+    Input('major-stream-input', 'value'),
+    [Input(f'checklist-input-{i}', 'value') for i in range(4)],
 )
-def update_stream_checklist(stream):
+def update_stream_checklist(stream, input0, input1, input2, input3):
     # 1: general
     # 2: data and info vis
     # 3: system and info security
@@ -606,27 +610,31 @@ def update_stream_checklist(stream):
     ]
 
     stream_to_put = []
+    stream_title = "Gaming"
 
-    if stream == "1":
+    if stream == "general-stream":
         stream_to_put = general
-    elif stream == "2":
+        stream_title = "General"
+    elif stream == "`database-stream`":
         stream_to_put = data_and_info_vis
-    elif stream == "3":
+        stream_title = "Databases and Interactive Visualization"
+    elif stream == "sys-info-stream":
         stream_to_put = system_info
-    elif stream == "4":
+        stream_title = "Systems and Information Security"
+    else:
         stream_to_put = gaming
-        print(stream_to_put)
-    return [
-        html.H6(f'{stream} Stream', style={'margin': '10px 0'}),
+
+    return dbc.Col([
+        html.H6(f'{stream_title} Stream', style={'margin': '10px 0'}),
         dbc.Checklist(
             id='checklist-input-2',
-            options=[
-                # put stream here
-                stream_to_put
-            ],
-            value=[10],
+            options=
+            # put stream here
+            stream_to_put
+            ,
+            value=[],
         )
-    ]
+    ])
 
 
 # UPDATE CHECKLIST
