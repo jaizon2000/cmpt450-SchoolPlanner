@@ -256,7 +256,7 @@ data_col = dbc.Col(
 
                 # table styling
                 style_table={
-                    'maxHeight': '100vh',
+                    'maxHeight': '80vh',
                     'overflowX': 'auto',  # scroll: https://bit.ly/3waaEII
                     'overflowY': 'auto',
                 },

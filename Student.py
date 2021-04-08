@@ -83,7 +83,6 @@ stud1.add("CMPT 101", "Planned")
 stud1.add("CMPT 200", "Planned")
 stud1.remove("CMPT 201")
 test = pd.read_csv("Data.csv")
-stud1.set(test)
 
 # stud1.add("CMPT 200", "Completed")
 #
