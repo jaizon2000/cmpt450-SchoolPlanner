@@ -359,12 +359,13 @@ checklist_col = dbc.Col([
                         dbc.Checklist(
                             id='checklist-input-2',
                             options=[
-                                {'label': 'CMPT 230', 'value': '10'},
-                                {'label': 'CMPT 291', 'value': '11'},
-                                {'label': 'CRWR 295', 'value': '12'},
-                                {'label': 'CMPT 330', 'value': '13'},
-                                {'label': 'CMPT 370', 'value': '14'},
-                                {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
+                                {'label': 'CMPT 230', 'value': 10},
+                                {'label': 'CMPT 291', 'value': 11},
+                                {'label': 'CRWR 295', 'value': 12},
+                                {'label': 'CMPT 330', 'value': 13},
+                                {'label': 'CMPT 370', 'value': 14},
+                                {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 15},
+                                # 16, 17for sys-info-stream
                             ],
                             value=[],
                         )
@@ -562,14 +563,9 @@ def update_my_table(n_clicks0,
 @app.callback(
     Output('major-stream-checklist', 'children'),
     Input('major-stream-input', 'value'),
-    [Input(f'checklist-input-{i}', 'value') for i in range(4)],
+    Input('my-table', 'data'),
 )
-def update_stream_checklist(stream, input0, input1, input2, input3):
-    # 1: general
-    # 2: data and info vis
-    # 3: system and info security
-    # 4: gaming
-
+def update_stream_checklist(stream,data_table):
     general = [
         {'label': "(6 Credits) CMPT 204 OR CMPT 229 OR CMPT 250 OR CMPT 280 OR CMPT 291", 'value': 10},
         {
@@ -628,10 +624,7 @@ def update_stream_checklist(stream, input0, input1, input2, input3):
         html.H6(f'{stream_title} Stream', style={'margin': '10px 0'}),
         dbc.Checklist(
             id='checklist-input-2',
-            options=
-            # put stream here
-            stream_to_put
-            ,
+            options=stream_to_put,  # put stream here
             value=[],
         )
     ])
