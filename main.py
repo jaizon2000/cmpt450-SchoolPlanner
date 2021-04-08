@@ -2,6 +2,10 @@
 import numpy as np
 import pandas as pd
 
+# Todo build onboarding with modal
+# Todo possibly add, col, courses you can take
+# todo fix update_checklist, when stream is changed, checks my-table to make the changes
+
 # Uploading Files
 import base64
 import io

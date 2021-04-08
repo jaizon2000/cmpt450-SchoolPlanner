@@ -14,6 +14,10 @@
 
 [Pandas](http://pandas.pydata.org/docs/user_guide/10min.html) 
 
+# Pandas and Database
+
+[Counting rows](https://bit.ly/31YKV8e) 
+
 # Student
 
 A Class that represents a student.
@@ -142,8 +146,6 @@ data table changes -> change checklist
 `sys-info-stream` 
 
 `database-stream`
-
-``
 
 [Dash Bootstrap Checklist Input](https://bit.ly/3sDJ8Bk) 
 
