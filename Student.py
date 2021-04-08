@@ -52,6 +52,7 @@ class Student:
             # getting the value of cell: https://bit.ly/3fS2ZJm
             status = new_df[new_df[key] == course]['Status'].values[0]
             self.add(course, status)
+        return self.my_courses
 
     def getdf(self, sort=True):
         if sort:

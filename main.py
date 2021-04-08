@@ -539,13 +539,14 @@ def update_my_table(n_clicks0,
                     contents, filename,
                     selected_courses, radio_select
                     ):
-    ctx = dash.callback_context  # seek the component where user clicks
 
+    ctx = dash.callback_context  # seek the component where user clicks
     if not ctx.triggered:
-        return [False for i in range(len(df))]
+        return stud.getdf_dict()
     else:
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]
         print(button_id)
+
 
     # CHECK BUTTON ID
     if button_id != "add-to-planner-btn":
@@ -614,7 +615,7 @@ def update_stream_checklist(stream, ):
 
     stream_to_put = []
     stream_title = "Gaming"
-    print(stream)
+    # print(stream)
 
     if stream == "general-stream":
         stream_to_put = general
