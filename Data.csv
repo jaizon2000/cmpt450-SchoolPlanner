@@ -1,0 +1,6 @@
+﻿Course ID,Course Name,Credits,Prerequisites,Status
+CMPT 104,Fluency with Information Technology,3,(),DONE
+CMPT 200,Data Structures and Algorithms,3,"('CMPT 103',)",DONE
+CMPT 204,Algorithms I,3,"('CMPT 200', ['CMPT 272', 'MATH 200'], ['MATH 113', 'or', 'MATH 114'],)",WIP
+CMPT 229,Computer Organization and Architecture,3,"('CMPT 200',)",PLANNED
+CMPT 230,Introduction to Computer Games,3,"(['CMPT', 'ENGL', ['PSYC 104', 'PSYC 105']],)",DONE
