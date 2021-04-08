@@ -41,7 +41,7 @@ class Student:
         self.my_courses = self.my_courses.copy().iloc[0:0]  # erase all rows but keep cols names: https://bit.ly/2PCF5Xi
         # print(self)
         try:
-            # print(new_df['id'])
+            print(new_df['id'])
             key = 'id'
         except:
             print("Column name isn't the one given or doesn't exist. Trying 'Course ID'...")
