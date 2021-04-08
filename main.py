@@ -539,22 +539,31 @@ def update_my_table(n_clicks0,
                     contents, filename,
                     selected_courses, radio_select
                     ):
-    # print("CONTENTS", parse_contents(contents, filename))
-    if contents is None and selected_courses is None:
-        return None
+    ctx = dash.callback_context  # seek the component where user clicks
 
-    # save into Student dataframe
-    elif contents is not None:
-        stud.set(parse_contents(contents, filename))
-        return stud.getdf_dict()
+    if not ctx.triggered:
+        return [False for i in range(len(df))]
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        print(button_id)
 
-    # MULTISELECT DROPDOWN INPUT
-    if selected_courses is not None:
-        if radio_select == 'remove':
-            [stud.remove(c) for c in selected_courses]
+    # CHECK BUTTON ID
+    if button_id != "add-to-planner-btn":
+        if contents is None and selected_courses is None:
+            return None
 
-        else:
-            [stud.add(c, radio_select.upper()) for c in selected_courses]
+        # save into Student dataframe
+        elif contents is not None:
+            stud.set(parse_contents(contents, filename))
+            return stud.getdf_dict()
+    else:
+        # MULTISELECT DROPDOWN INPUT
+        if selected_courses is not None:
+            if radio_select == 'remove':
+                [stud.remove(c) for c in selected_courses]
+
+            else:
+                [stud.add(c, radio_select.upper()) for c in selected_courses]
 
     return stud.getdf_dict()
 
@@ -565,7 +574,7 @@ def update_my_table(n_clicks0,
     Input('major-stream-input', 'value'),
     Input('my-table', 'data'),
 )
-def update_stream_checklist(stream,data_table):
+def update_stream_checklist(stream, data_table):
     general = [
         {'label': "(6 Credits) CMPT 204 OR CMPT 229 OR CMPT 250 OR CMPT 280 OR CMPT 291", 'value': 10},
         {
@@ -656,7 +665,7 @@ def update_checklist(
         value = []
         # for courses in data table, get the checklist value for it
         # print(c['id'], c['status'])
-        # print(c)
+        print(c)
         [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
         # checked_values += value
 
