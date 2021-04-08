@@ -2,6 +2,11 @@
 import numpy as np
 import pandas as pd
 
+# Uploading Files
+import base64
+import io
+import dash
+
 # Import Ploty Dash
 import dash
 import dash_html_components as html
@@ -178,8 +183,22 @@ input_col = dbc.Col(
                             value='done',
                             labelStyle={'display': 'block'}  # make new line option
                         ),
-                        dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0,
-                                   style={'margin-top': '10px'}),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0)),
+                                dbc.Col(
+                                    dcc.Upload(
+                                        id='upload-table',
+                                        children=[
+                                            dbc.Button("Import CSV", id='import-btn', color='secondary'),
+                                        ]
+                                    ), width='auto'
+                                ),
+                            ],
+                            style={'margin-top': '10px'},
+                            justify='between',
+                        ),
 
                     ])),
                 ]
@@ -219,6 +238,7 @@ data_col = dbc.Col(
             # html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
             # datatable basic: https://bit.ly/3fmu0EB
+
             dash_table.DataTable(
                 id='my-table',
                 # columns=[{'id': c, 'name': c.title()} for c in df.columns],
@@ -229,9 +249,10 @@ data_col = dbc.Col(
                     {'id': 'prereq', 'name': 'Prerequisites'},
                     {'id': 'status', 'name': 'Status'},
                 ],
-
+                # DATA TABLE SETTINGS
                 data=stud.getdf().to_dict('records'),  # data to use
                 filter_action='native',  # for filtering
+                row_deletable=True,
 
                 # table styling
                 style_table={
@@ -257,6 +278,9 @@ data_col = dbc.Col(
 
                      'width': 'auto'},
                 ],
+
+                export_format='csv',
+                export_headers='display',
             ),
         ])),
 
@@ -371,6 +395,44 @@ app.layout = dbc.Container(
 )
 
 
+def parse_contents(contents, filename):
+    # Uploading file to data table: https://bit.ly/3mq82SK
+
+    content_type, content_string = contents.replace('"', '').split(',')
+    decoded = base64.b64decode(content_string)
+
+    if 'csv' in filename:
+        # Assume that the user uploaded a CSV file
+        df = pd.read_csv(
+            io.StringIO(decoded.decode('utf-8')))
+        return df
+
+    elif 'xls' in filename:
+        # Assume that the user uploaded an excel file
+        return pd.read_excel(io.BytesIO(decoded))
+
+
+'''
+INTRO MODAL
+'''
+intro_modal = html.Div(
+    [
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Computer"),
+                dbc.ModalBody([
+
+                ]),
+                dbc.ModalFooter(
+                    dbc.Button("Close", id="close", className="ml-auto")
+                ),
+            ],
+            size='xl',
+        )
+    ]
+)
+
+
 # FILTER COURSES - SEARCH
 @app.callback(
     [Output(f'collapse-card-{i}', 'style') for i in range(len(df))],
@@ -441,14 +503,24 @@ def toggle_accordion(*args):
 
     # STATE
     # [State(f'checklist-input-{i}', 'options') for i in range(4)],
+    Input('upload-table', 'contents'),
+    State('upload-table', 'filename'),
 
     State('courses-input', 'value'),
     State('status-radio', 'value'),
 )
-def update_my_table(n_clicks,
+def update_my_table(n_clicks0,
+                    contents, filename,
                     selected_courses, radio_select
                     ):
-    print(radio_select)
+    # print("CONTENTS", parse_contents(contents, filename))
+    if contents is None and selected_courses is None:
+        return None
+
+    # save into Student dataframe
+    elif contents is not None:
+        stud.set(parse_contents(contents, filename))
+        return stud.getdf_dict()
 
     # MULTISELECT DROPDOWN INPUT
     if selected_courses is not None:
@@ -458,9 +530,10 @@ def update_my_table(n_clicks,
         else:
             [stud.add(c, radio_select.upper()) for c in selected_courses]
 
-    return stud.getdf().to_dict('records')
+    return stud.getdf_dict()
 
 
+# UPDATE CHECKLIST
 @app.callback(
     # [Output(f'checklist-input-{i}', 'value') for i in range(4)],
     # Output('container-button-timestamp', 'children'),
@@ -477,10 +550,6 @@ def update_checklist(
         data_table,
         check_opt0, check_opt1, check_opt2, check_opt3,
 ):
-    print(check_opt0)
-
-    print(data_table)
-
     # get current ctx triggered
     # if button clicked value id is == to that id, change value of that id triggere
     checked_values = []
@@ -489,8 +558,10 @@ def update_checklist(
     for c in data_table:
         value = []
         # for courses in data table, get the checklist value for it
-        [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == "DONE"]
-        checked_values += value
+        # print(c['id'], c['status'])
+        # print(c)
+        # [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
+        # checked_values += value
 
     return [checked_values for i in range(4)]
 

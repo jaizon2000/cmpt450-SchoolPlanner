@@ -14,6 +14,24 @@
 
 [Pandas](http://pandas.pydata.org/docs/user_guide/10min.html) 
 
+# Student
+
+A Class that represents a student.
+Contains the data frame of Student’s courses
+
+```python
+# main.py
+
+# Get data
+df = pd.read_csv('cmpt-courses-cleaned.csv')
+df_dict = df.to_dict('records')
+
+stud = Student()
+stud_df = df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
+
+course_classes_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in df_dict]
+```
+
 ## Inputs Column
 ### Search courses
 
@@ -72,8 +90,28 @@ So instead of getting the input as soon as there’s a change, the input is only
 
 ## Data Table
 
-- [ ] Export current data table
+- [x] Export current data table
 - [ ] Import a data table (csv, json)
+- [ ] reset button (delete all rows)
+- [ ] how to modal
+
+when importing, it take the string but it’s has, `“....”()” ”` so the double quote inside the double quote cause an error when splitting and is illegal.
+
+[Stack overflow convo](https://bit.ly/39UCQWJ), [`quotechar`](https://bit.ly/3s478w9) 
+
+### Importing
+
+[Uploading Data](https://bit.ly/3mq82SK) 
+
+#### Output
+
+`my-table`
+
+#### Input
+
+`upload-table` - the upload container
+
+`import-btn` 
 
 ### Data table
 
@@ -81,11 +119,11 @@ data table changes -> change checklist
 
 #### Output
 
-check-list-input-X, value
+`check-list-input-X, value` 
 
 #### Input
 
-my-table
+`my-table`
 
 #### State
 

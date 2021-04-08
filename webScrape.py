@@ -79,8 +79,8 @@ def get_prereqs(string):
             cleaned.append([])
     # return all index of found: https://bit.ly/3c8msn0
     indexes = [i for i, x in enumerate(prereqs) if x in ["or", "and"]]
-    print(indexes)
-    print(cleaned)
+    # print(indexes)
+    # print(cleaned)
 
     return tuple(prereqs)
 
@@ -92,7 +92,7 @@ def print_course(course_elems):
         course = course.text.split("\n")
 
         # ID
-        course_id = course[0].replace("\xa0", " ")
+        course_id = course[0].replace("\xa0", " ")  # replace weird escape code
         # Title
         course_title = course[1]
         # Credits
@@ -105,20 +105,23 @@ def print_course(course_elems):
         course_prereq_data = course_elem.find(class_='courseblockextra')
 
         # Print
-        print(course_id)
-        print(course_title)
-        print(course_credits)
-        print(course_desc.text)
+        # print(course_id)
+        # print(course_title)
+        # print(course_credits)
+        # print(course_desc.text)
         prereqs = ()
         if course_prereq_data is not None:
+            print(course_prereq_data.text)
             course_prereq = course_prereq_data.text \
                 .replace('.', '') \
                 .replace(',', '') \
+                .replace("'", '') \
                 .strip()
             prereqs = get_prereqs(course_prereq)
 
             # print(course_prereq)
             # print(course_prereq_data.text)
+        print(prereqs)
 
         course_id_list.append(Course(course_id, course_title, course_credits, course_desc.text, prereqs))
         # todo create a Course class when parameters all known
@@ -156,4 +159,4 @@ course_elems = courses.find_all(class_='courseblock')  # find all elements with 
 course_id_list = []  # list of Course classes
 print_course(course_elems)
 df = init_df(course_id_list)
-df.to_csv('cmpt-courses.csv', index=False)
+df.to_csv('cmpt-courses.csv', index=False, quoting=None)
