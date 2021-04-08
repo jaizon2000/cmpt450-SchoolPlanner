@@ -205,7 +205,7 @@ input_col = dbc.Col(
                         ])),
                     ]
                 ),
-                style={'margin': '5px 0',}
+                style={'margin': '5px 0', }
             )),
             style={'maxHegiht': '30vh', 'overflowY': 'auto'}),
 
@@ -215,13 +215,15 @@ input_col = dbc.Col(
             dbc.Row(
                 [
                     dbc.Col(dbc.Button("Default", color="primary", id='view-btn-default', n_clicks=0),
-                            width='auto', ),
+                            width='auto', style={'margin-right':'10px'}),
                     dbc.Col(dbc.Button("Sunburst", color="secondary", id='view-btn-sun', n_clicks=0, disabled=True),
                             width='auto', ),
                     html.Div(id='container-button-timestamp')
                 ],
                 justify='start',
+                no_gutters=True,
                 style={'margin': '5px 0'},
+
             ),
 
         ]),
@@ -360,7 +362,7 @@ checklist_col = dbc.Col([
                         {'label': 'CMPT 370', 'value': '14'},
                         {'label': 'CMPT 250 OR CMPT 280 OR CMPT 355', 'value': '15'},
                     ],
-                    value=[10],
+                    value=[],
                 )
             ])),
 
@@ -368,7 +370,6 @@ checklist_col = dbc.Col([
             dbc.Row(dbc.Col([
                 html.H6('Credits', style={'margin': '10px 0'}),
                 dbc.Checklist(
-                    id='checklist-input-3',
                     options=[
                         {'label': '12 Credits in CMPT 300-level or CMPT 400-level', 'value': 15},
                         {'label': '72 Credits in Science Courses', 'value': 16},
@@ -377,11 +378,16 @@ checklist_col = dbc.Col([
                         {'label': '60 Credits max in one course category', 'value': 19},
                         {'label': '120 Credits in Total', 'value': 20},
                     ],
-                    value=[1],
+                    id='checklist-input-3',
+                    value=[],
+
                 )
-            ])),
-        ])],
+            ], ), ),
+        ],
+        style={'maxHeight': '80vh', 'overflowY': 'auto', 'overflowX': 'hidden'}
+    )],
     width=3,
+
 )
 
 '''
