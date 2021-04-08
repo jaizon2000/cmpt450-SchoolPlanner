@@ -423,15 +423,15 @@ app.layout = dbc.Container(
 
 def parse_contents(contents, filename):
     # Uploading file to data table: https://bit.ly/3mq82SK
+    print(contents, filename)
 
     content_type, content_string = contents.replace('"', '').split(',')
     decoded = base64.b64decode(content_string)
 
     if 'csv' in filename:
         # Assume that the user uploaded a CSV file
-        df = pd.read_csv(
+        return pd.read_csv(
             io.StringIO(decoded.decode('utf-8')))
-        return df
 
     elif 'xls' in filename:
         # Assume that the user uploaded an excel file
@@ -564,7 +564,6 @@ def update_my_table(n_clicks0,
 
             else:
                 [stud.add(c, radio_select.upper()) for c in selected_courses]
-
     return stud.getdf_dict()
 
 
@@ -572,9 +571,8 @@ def update_my_table(n_clicks0,
 @app.callback(
     Output('major-stream-checklist', 'children'),
     Input('major-stream-input', 'value'),
-    Input('my-table', 'data'),
 )
-def update_stream_checklist(stream, data_table):
+def update_stream_checklist(stream, ):
     general = [
         {'label': "(6 Credits) CMPT 204 OR CMPT 229 OR CMPT 250 OR CMPT 280 OR CMPT 291", 'value': 10},
         {
@@ -585,7 +583,7 @@ def update_stream_checklist(stream, data_table):
 
     ]
 
-    data_and_info_vis = [
+    database = [
         {'label': "CMPT 250 ", 'value': 10},
         {'label': "CMPT 270", 'value': 11},
         {'label': "CMPT 291", 'value': 12},
@@ -616,18 +614,20 @@ def update_stream_checklist(stream, data_table):
 
     stream_to_put = []
     stream_title = "Gaming"
+    print(stream)
 
     if stream == "general-stream":
         stream_to_put = general
         stream_title = "General"
-    elif stream == "`database-stream`":
-        stream_to_put = data_and_info_vis
+    elif stream == "database-stream":
+        stream_to_put = database
         stream_title = "Databases and Interactive Visualization"
     elif stream == "sys-info-stream":
         stream_to_put = system_info
         stream_title = "Systems and Information Security"
-    else:
+    elif stream == "gaming-stream":
         stream_to_put = gaming
+        stream_title = "Gaming"
 
     return dbc.Col([
         html.H6(f'{stream_title} Stream', style={'margin': '10px 0'}),
@@ -661,13 +661,15 @@ def update_checklist(
     checked_values = []
     labels = {check['label']: check['value'] for check in check_opt0 + check_opt1 + check_opt2 + check_opt3}
 
-    for c in data_table:
-        value = []
-        # for courses in data table, get the checklist value for it
-        # print(c['id'], c['status'])
-        print(c)
-        [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
-        # checked_values += value
+    if len(stud) > 0:
+        for c in data_table:
+            value = []
+            # for courses in data table, get the checklist value for it
+            # print(c['id'], c['status'])
+            # print(c)
+            print(stud.df_dict)
+            [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
+            checked_values += value
 
     return [checked_values for i in range(4)]
 

@@ -71,6 +71,9 @@ class Student:
             if c.id == c_id.upper:
                 return c
 
+    def __len__(self):
+        return len(self.my_courses.index)
+
     def __repr__(self):
         return f"{self.my_courses}"
 
