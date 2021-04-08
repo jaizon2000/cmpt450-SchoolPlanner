@@ -532,6 +532,80 @@ def update_my_table(n_clicks0,
 
     return stud.getdf_dict()
 
+# CHANGING STREAM CHECKLIST
+@app.callback(
+    Output('major-stream-checklist', 'children'),
+
+    Input('major-stream', 'value')
+)
+def update_stream_checklist(stream):
+    # 1: general
+    # 2: data and info vis
+    # 3: system and info security
+    # 4: gaming
+
+    general = [
+        {'label': "(6 Credits) CMPT 204 OR CMPT 229 OR CMPT 250 OR CMPT 280 OR CMPT 291", 'value': 10},
+        {
+            'label': "(6 Credits) CMPT 305 OR CMPT 306 OR CMPT 315 OR CMPT 330 OR "
+                     "CMPT 355 OR CMPT 360 OR CMPT 361 OR CMPT 370 OR CMPT 380 OR CMPT 391",
+            'value': 11},
+        {'label': "(15 to 33 Credits)", 'value': 12},
+
+    ]
+
+    data_and_info_vis = [
+        {'label': "CMPT 250 ", 'value': 10},
+        {'label': "CMPT 270", 'value': 11},
+        {'label': "CMPT 291", 'value': 12},
+        {'label': "(12 Credits) CMPT 315 OR CMPT 351 OR CMPT 391 OR CMPT 450 OR CMPT 491", 'value': 13},
+        {'label': "(6 to 24 Credits)", 'value': 14},
+    ]
+
+    system_info = [
+        {'label': "CMPT 229 ", 'value': 10},
+        {'label': "CMPT 280", 'value': 11},
+        {'label': "CMPT 360", 'value': 12},
+        {'label': "CMPT 361", 'value': 13},
+        {'label': "CMPT 380", 'value': 14},
+        {'label': "CMPT 464", 'value': 15},
+        {'label': "CMPT 480", 'value': 16},
+        {'label': "(6 to 24 Credits)", 'value': 17},
+    ]
+
+    gaming = [
+        {'label': 'CMPT 230', 'value': 10},
+        {'label': 'CMPT 291', 'value': 11},
+        {'label': 'CRWR 295', 'value': 12},
+        {'label': 'CMPT 330', 'value': 13},
+        {'label': 'CMPT 370', 'value': 14},
+        {'label': '(3 Credits) CMPT 250 OR CMPT 280 OR CMPT 355', 'value': 15},
+        {'label': "9 to 27 More Credits In CMPT", 'value': 16},
+    ]
+
+    stream_to_put = []
+
+    if stream == "1":
+        stream_to_put = general
+    elif stream == "2":
+        stream_to_put = data_and_info_vis
+    elif stream == "3":
+        stream_to_put = system_info
+    elif stream == "4":
+        stream_to_put = gaming
+        print(stream_to_put)
+    return [
+        html.H6(f'{stream} Stream', style={'margin': '10px 0'}),
+        dbc.Checklist(
+            id='checklist-input-2',
+            options=[
+                # put stream here
+                stream_to_put
+            ],
+            value=[10],
+        )
+    ]
+
 
 # UPDATE CHECKLIST
 @app.callback(
@@ -560,7 +634,7 @@ def update_checklist(
         # for courses in data table, get the checklist value for it
         # print(c['id'], c['status'])
         # print(c)
-        # [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
+        [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
         # checked_values += value
 
     return [checked_values for i in range(4)]

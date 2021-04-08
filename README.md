@@ -129,6 +129,12 @@ data table changes -> change checklist
 
 ## Checklist Column
 
+### Choosing a stream
+
+`major-stream` - dropdown
+
+`major-stream-checklist` - checklist stream container
+
 [Dash Bootstrap Checklist Input](https://bit.ly/3sDJ8Bk) 
 
 ### change in checklist -> change data table
