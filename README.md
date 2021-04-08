@@ -131,9 +131,17 @@ data table changes -> change checklist
 
 ### Choosing a stream
 
-`major-stream` - dropdown
+`major-stream-input` - dropdown
 
 `major-stream-checklist` - checklist stream container
+
+`game-stream`
+
+`sys-info-stream` 
+
+`satabase-stream`
+
+``
 
 [Dash Bootstrap Checklist Input](https://bit.ly/3sDJ8Bk) 
 

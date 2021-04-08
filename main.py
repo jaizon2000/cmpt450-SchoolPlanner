@@ -147,64 +147,67 @@ input_col = dbc.Col(
             id='courses-results-container',
         ),
 
-            style={'overflow': 'scroll', 'maxHeight': '50vh', 'overflowX': 'hidden'},  # style container
+            style={'overflow': 'scroll', 'maxHeight': '45vh', 'overflowX': 'hidden'},  # style container
         ),
 
         # SELECT AND INPUT
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.H4("Mark selected course(s) as:", style={'margin-bottom': '10px'}),
+        dbc.Row(
+            dbc.Col(dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.H4("Mark selected course(s) as:", style={'margin-bottom': '10px'}),
 
-                    # MULTI SELECTED COURSES
-                    dbc.Row(dbc.Col([
-                        dcc.Dropdown(
-                            id='courses-input',
-                            options=[
-                                {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
-                            ],
-                            placeholder='Select Courses...',
-                            value=[],
-                            multi=True,
-                        )
-                    ]),
-                        style={'margin-bottom': '10px'}),
+                        # MULTI SELECTED COURSES
+                        dbc.Row(dbc.Col([
+                            dcc.Dropdown(
+                                id='courses-input',
+                                options=[
+                                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
+                                ],
+                                placeholder='Select Courses...',
+                                value=[],
+                                multi=True,
+                            )
+                        ]),
+                            style={'margin-bottom': '10px'}),
 
-                    # COURSE STATUS RADIO BTNS
-                    dbc.Row(dbc.Col([
-                        dbc.RadioItems(
-                            id='status-radio',
-                            options=[
-                                {'label': 'Completed', 'value': 'done'},
-                                {'label': 'Work In Progress', 'value': 'wip'},
-                                {'label': 'Planning to Take', 'value': 'planned'},
-                                {'label': 'Remove from Table', 'value': 'remove'},
-                            ],
-                            value='done',
-                            labelStyle={'display': 'block'}  # make new line option
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn', n_clicks=0)),
-                                dbc.Col(
-                                    dcc.Upload(
-                                        id='upload-table',
-                                        children=[
-                                            dbc.Button("Import CSV", id='import-btn', color='secondary'),
-                                        ]
-                                    ), width='auto'
-                                ),
-                            ],
-                            style={'margin-top': '10px'},
-                            justify='between',
-                        ),
+                        # COURSE STATUS RADIO BTNS
+                        dbc.Row(dbc.Col([
+                            dbc.RadioItems(
+                                id='status-radio',
+                                options=[
+                                    {'label': 'Completed', 'value': 'done'},
+                                    {'label': 'Work In Progress', 'value': 'wip'},
+                                    {'label': 'Planning to Take', 'value': 'planned'},
+                                    {'label': 'Remove from Table', 'value': 'remove'},
+                                ],
+                                value='done',
+                                labelStyle={'display': 'block'}  # make new line option
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Col(
+                                        dbc.Button("Add to Planner", color="primary", id='add-to-planner-btn',
+                                                   n_clicks=0)),
+                                    dbc.Col(
+                                        dcc.Upload(
+                                            id='upload-table',
+                                            children=[
+                                                dbc.Button("Import CSV", id='import-btn', color='secondary'),
+                                            ]
+                                        ), width='auto'
+                                    ),
+                                ],
+                                style={'margin-top': '10px'},
+                                justify='between',
+                            ),
 
-                    ])),
-                ]
-            ),
-            style={'margin': '5px 0'}
-        ),
+                        ])),
+                    ]
+                ),
+                style={'margin': '5px 0',}
+            )),
+            style={'maxHegiht': '30vh', 'overflowY': 'auto'}),
 
         # CHANGE VIEW BTNS
         dbc.Container([
@@ -218,7 +221,7 @@ input_col = dbc.Col(
                     html.Div(id='container-button-timestamp')
                 ],
                 justify='start',
-                style={'margin-top': '10px'},
+                style={'margin': '5px 0'},
             ),
 
         ]),
@@ -296,6 +299,18 @@ Column 3 - Checklist
 checklist_col = dbc.Col([
     html.H4('Checklist'),
     html.H5("Computer Science Major", style={'margin-bottom': '10px'}),
+
+    dcc.Dropdown(
+        id='major-stream-input',
+        options=[
+            {'label': 'General Stream', 'value': 'general-stream'},
+            {'label': 'Databases and Interactive', 'value': 'database-stream'},
+            {'label': 'Systems and Information Security', 'value': 'sys-info-stream'},
+            {'label': 'Gaming ', 'value': 'game-stream'},
+        ],
+        placeholder="Choose a Stream",
+        searchable=False,
+    ),
 
     dbc.FormGroup(
         id='checklist',
@@ -531,6 +546,7 @@ def update_my_table(n_clicks0,
             [stud.add(c, radio_select.upper()) for c in selected_courses]
 
     return stud.getdf_dict()
+
 
 # CHANGING STREAM CHECKLIST
 @app.callback(
