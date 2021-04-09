@@ -1,6 +1,6 @@
 ﻿Course ID,Course Name,Credits,Prerequisites,Status
 CMPT 101,,,,
-CMPT 103,,3,(),PLANNED
+CMPT 103,,3,(),PLaNNED
 CMPT 104,Fluency with Information Technology,3,(),PLANNED
 CMPT 200,,3,"(CMPT 103,)",PLANNED
 CMPT 201,Practical Programming Methodology,3,"(CMPT 200,)",PLANNED

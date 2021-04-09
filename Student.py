@@ -9,10 +9,13 @@ class Student:
         self.id = id
 
         self.df = pd.read_csv('cmpt-courses-cleaned.csv')
+        self.df = self.df.convert_dtypes() # dtype conversion: https://bit.ly/3piVyNo
+        self.df['status'] = '' # add status column
+
         self.df_dict = self.df.to_dict('records')
         self.course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in
                                   self.df_dict]
-
+        print(self.df.dtypes)
         self.my_courses = self.df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
 
     def add(self, course, status):
@@ -23,11 +26,13 @@ class Student:
             # course doesn't exist in database
             return f"{course.upper()} doesn't exist the database"
 
+        # status is none
         # add to my courses, remove duplicates, reset index numbering
         self.my_courses = pd.concat([self.my_courses, other], sort=True).drop_duplicates(subset=['id'], keep='last')
 
         # add/change status col of given course
-        self.my_courses.loc[self.my_courses['id'] == course.upper(), 'status'] = status.upper()
+        self.my_courses.loc[self.my_courses['id'] == course.upper(), 'status'] = status
+        self.my_courses['status'] = self.my_courses['status'].str.upper()
         # print(self)
         return self.my_courses
 
@@ -47,7 +52,7 @@ class Student:
         # self.my_courses = self.my_courses.copy().iloc[0:0]  # erase all rows but keep cols names: https://bit.ly/2PCF5Xi
         # print(self)
         try:
-            print(new_df['id'])
+            x = new_df['id']
             key = 'id'
         except:
             print("Column name isn't the one given or doesn't exist. Trying 'Course ID'...")
