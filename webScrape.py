@@ -14,11 +14,11 @@ import requests
 from bs4 import BeautifulSoup
 
 # networkx: https://bit.ly/3f3OGkC
-import networkx as nx
+# import networkx as nx
 
 from Course import *
 
-G = nx.Graph()
+# G = nx.Graph()
 
 
 # print(df)
