@@ -252,22 +252,38 @@ sample_df = pd.DataFrame({
 }).convert_dtypes()
 
 import_modal_content = '''
- # This is an <h1> tag
-                        
-## This is an <h2> tag
+The supported files you can export is `.csv` and `.xls.`
 
-###### This is an <h6> tag
+You ***must*** follow this column format (this means column name is ***case sensitive*** )
+
+The only required cell to input is `Course ID` but it’s recommended to add a status!
+
+Columns `Course Name`, `Credits`, and `Prerequisites` are automatically filled based on the given `Course ID`
+
+
 | Course ID | Course Name | Credits | Prerequisites | Status |
 | --------- | ----------- | ------- | ------------- | ------ |
 | CMPT 103  | --          | --      | --            | PLANNED|
 '''
+
+
 import_modal = [dbc.ModalHeader("Header"),
                 dbc.ModalBody([
                     dcc.Markdown(import_modal_content),
+                    dbc.Button(
+                        "Download CSV template", color='info', id='download-template-btn',
+                        href="https://bit.ly/3uuwDIK", target="_blank", className="mt-3"
+                    ),
                 ]),
-                dbc.Button("Download CSV template", id='download-template'),
                 dbc.ModalFooter(
-                    dbc.Button("Close", id="close-import", className="ml-auto")
+                    dbc.Button("Close", id="close-import", className="ml-auto", color='dark'),
+                    style={'margin-top': '10px'}
+                ),
+
+                dbc.Tooltip(
+                    "You will be link to the raw csv data. "
+                    "Right click on the page and Save As",
+                    target="download-template-btn",
                 ),
                 ]
 '''
@@ -488,7 +504,6 @@ app.layout = dbc.Container(
     ],
     fluid=True
 )
-
 
 
 @app.callback(

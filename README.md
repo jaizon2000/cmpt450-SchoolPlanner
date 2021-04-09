@@ -111,14 +111,23 @@ when importing, it take the string but it’s has, `“....”()” ”` so the 
 
 The supported files you can export is `.csv` and `.xls.`
 
-You ***must*** follow this column format (this means column name is case sensitive )
+You ***must*** follow this column format (this means column name is ***case sensitive*** )
 
 The only required cell to input is `Course ID` but it’s recommended to add a status!
+
+Columns `Course Name`, `Credits`, and `Prerequisites` are automatically filled based on the given `Course ID`
+
 
 | Course ID | Course Name | Credits | Prerequisites | Status  |
 | --------- | ----------- | ------- | ------------- | ------- |
 | CMPT 103  | --          | --      | --            | PLANNED |
 
+Below is the raw `.csv` file of the example table above.
+
+```
+Course ID,Course Name,Credits,Prerequisites,Status
+CMPT 101,,,PLANNED,
+```
 
 
 ### Importing
