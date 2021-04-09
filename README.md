@@ -164,11 +164,67 @@ data table changes -> change checklist
 
 `open-intro`, `close-intro`
 
-There are 3 columns: Find Courses, My Table, and Checklist
+There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
-1. Here you can search for a course’s full description quickly.
-   You can search by a course id, course name and, even by a course’s description.
-   
+1. **Find Courses**
+
+   Here you can search for a course’s full description quickly.
+   You can search by a course id, course name and, even by a course’s description. As you search, results will update live.
+
+   ![](https://i.imgur.com/rtAsbTD.png) 
+
+   You can select multiple courses and set a status for them. You can also remove them from the table.
+   You can choose to import a `csv` or `xls` file to put data into your table. ***Check How to Import for more details*** 
+
+   ![](https://i.imgur.com/h6koO6e.png?1)
+
+   In the future, you will be able to switch to a sunburst view, showing the relation of courses in your table more visually. For now we’ll have to stick with the table 😅.
+
+2. **My Table**
+
+   This table represents your Computer Science Major degree plan.
+   Every time you make changes from the ***Mark selected courses(s) as:*** section, it will be added to you table.
+   You can export your table at any point into a `.csv` fille.
+
+   Within the table, you can filter the data. You can filter by string or number, depending on the column.
+
+   ![](https://i.imgur.com/Q9g4VFR.png) 
+
+   The official docs on filtering tables can be found [here](https://bit.ly/31tUrjG).
+
+   **Text & String Filtering**
+
+   - `United`
+   - `= United`
+   - `United States`
+   - `"United States"`
+   - `= United States`
+   - `= "United States"`
+   - `> United`
+   - `>= United`
+   - `< United`	
+   - `<= United`
+
+   **Numeric Filtering**
+
+   - `43.828`
+   - `= 43.828`
+   - `> 43.828`
+   - `>= 43.828`
+   - `< 43.828`
+   - `<= 43.828`
+
+   Below the table, are where you can go back to this window if you ever get lost. You can also find helpful information here like ***How to Import***.
+
+3. **Checklist**
+
+   Finally, the checklist. The dropdown allows you to change your checklist requirements based on the stream you choose.
+
+   The default stream is the *Gaming Stream*.
+
+   ![](https://i.imgur.com/rXgKu7e.png) 
+
+   In the future, any updates to your table will be able to reflect on you checklist.
 
 ## Checklist Column
 
