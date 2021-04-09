@@ -21,6 +21,9 @@ import dash_table
 
 # App Callback for Dash
 from dash.dependencies import Input, Output, State
+# download a csv
+from dash_extensions import Download
+from dash_extensions.snippets import send_data_frame
 
 # Bootstrap for Dash: https://bit.ly/3tKt9S3
 import dash_bootstrap_components as dbc
@@ -239,10 +242,30 @@ input_col = dbc.Col(
     ],
     width=3,
 )
+# MODAL CONTENT
+sample_df = pd.DataFrame({
+    'Course ID': ['CMPT 101'],
+    'Course Name': [''],
+    'Credits': [''],
+    'Prerequisites': [''],
+    'Status': ['PLANNED'],
+}).convert_dtypes()
+
+import_modal_content = '''
+ # This is an <h1> tag
+                        
+## This is an <h2> tag
+
+###### This is an <h6> tag
+| Course ID | Course Name | Credits | Prerequisites | Status |
+| --------- | ----------- | ------- | ------------- | ------ |
+| CMPT 103  | --          | --      | --            | --     |
+'''
 import_modal = [dbc.ModalHeader("Header"),
                 dbc.ModalBody([
-                    "This is the content of the modal"
+                    dcc.Markdown(import_modal_content),
                 ]),
+                dbc.Button("Download CSV template", id='download-template'),
                 dbc.ModalFooter(
                     dbc.Button("Close", id="close-import", className="ml-auto")
                 ),
@@ -313,11 +336,10 @@ data_col = dbc.Col(
         dbc.Button("How to Import", id="open-import", outline=True, color='info'),
 
         # modal here
-
         dbc.Modal(
             children=import_modal,
             id="import-modal",
-            # is_open=True,
+            is_open=True,
         ),
 
     ], width=6
@@ -466,6 +488,11 @@ app.layout = dbc.Container(
     ],
     fluid=True
 )
+
+
+@app.callback(Output("download", "data"), [Input("download-template", "n_clicks")])
+def generate_csv(n_nlicks):
+    return send_data_frame(df.to_csv, filename="some_name.csv")
 
 
 @app.callback(

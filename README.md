@@ -109,13 +109,15 @@ when importing, it take the string but it’s has, `“....”()” ”` so the 
 
 `open-import` , `close-import`
 
-The supported files you can export is .csv and .xls.
+The supported files you can export is `.csv` and `.xls.`
 
-You ***must*** follow this column format
+You ***must*** follow this column format (this means column name is case sensitive )
+
+The only required cell to input is `Course ID`
 
 | Course ID | Course Name | Credits | Prerequisites | Status |
 | --------- | ----------- | ------- | ------------- | ------ |
-| CMPT 103  |             |         |               |        |
+| CMPT 103  | --          | --      | --            | --     |
 
 ### Importing
 
