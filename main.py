@@ -270,7 +270,7 @@ CMPT 101,,,PLANNED,
 
 import_modal = dbc.Modal(
     [
-        dbc.ModalHeader("How to Import"),
+        dbc.ModalHeader("📝 How to Import"),
         dbc.ModalBody([
             dcc.Markdown(import_modal_content),
             dbc.Button(
@@ -295,9 +295,9 @@ import_modal = dbc.Modal(
     size="lg",
 )
 intro_modal_content = '''
-### 🎉 Welcome to the MacEwan Computer Sci. Major Planner
+### Welcome to the MacEwan Computer Sci. Major Planner 🎉 
 
-##### Here's some info on how to use the application
+##### Understand the basics of the application
 There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
 1. **Find Courses**
@@ -359,18 +359,13 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
    ![](https://i.imgur.com/rXgKu7e.png) 
 
    In the future, any updates to your table will be able to reflect on you checklist.
-
-
 '''
 
-'''
-INTRO MODAL
-'''
 intro_modal = dbc.Modal(
     [
-        dbc.ModalHeader("Getting Started"),
+        dbc.ModalHeader("🎉 Getting Started"),
         dbc.ModalBody([
-            dcc.Markdown(intro_modal_content, style={'midth': '20px'}),
+            dcc.Markdown(intro_modal_content),
 
         ]),
         dbc.ModalFooter(
@@ -382,7 +377,51 @@ intro_modal = dbc.Modal(
     is_open=True,
     scrollable=True,
 )
+readpre_modal_content = '''
+A prerequisite of a course is always wrapped in **brackets**.
 
+If there are no prerequisites = `()`
+
+If there’s one or more prerequisites = `(CMPT 201, CMPT 103, ...)`
+
+Inside the brackets, courses can be enclosed in **square brackets** `[CMPT 200, 201]`
+
+This means that the prerequisite is choosing one of those courses in the list.
+
+###### An Example (CMPT 272)
+
+To understand more, let’s use `CMPT 272` as an example.
+
+Its prerequisites are: `([CMPT 101, CMPT 103, CMPT 200], MATH 114, [MATH 120, MATH 125])`
+
+The whole prerequisite is **enclosed in brackets**, meaning that we **must take all the courses inside the brackets**.
+
+Let’s go through each element in the brackets:
+
+- `[CMPT 101, CMPT 103, CMPT 200]` - Take `CMPT 101` or `CMPT 103` or `CMPT 200`
+- `MATH 114` - Take MATH 114
+- `[MATH 120, MATH 125]` - Take `MATH 120` or `MATH 125`
+
+###### That’s it! Now you know how to fully read prerequisites.
+
+In the future, we hope to make this more visual!
+'''
+readpre_modal = dbc.Modal(
+    [
+        dbc.ModalHeader("🧱 How to Read Prerequisites"),
+        dbc.ModalBody([
+            dcc.Markdown(readpre_modal_content),
+
+        ]),
+        dbc.ModalFooter(
+            dbc.Button("Close", id="close-readpre", className="ml-auto", color='dark')
+        ),
+    ],
+    id='readpre-modal',
+    size='lg',
+    # is_open=True,
+    scrollable=True,
+)
 '''
 Column 2 - Data Tables
 '''
@@ -447,11 +486,13 @@ data_col = dbc.Col(
 
         # HOW TO IMPORT MODAL BTN
         dbc.Button("Getting Started", id="open-intro", color='info', className='mr-2', ),
-        dbc.Button("How to Import", id="open-import", outline=True, color='info'),
+        dbc.Button("How to Import", id="open-import", outline=True, color='info', className='mr-2', ),
+        dbc.Button("How to Read Prerequisites", id="open-readpre", outline=True, color='info', className='mr-2', ),
 
         # MODALS
         intro_modal,
         import_modal,
+        readpre_modal,
 
     ], width=6
 )
@@ -581,6 +622,7 @@ app.layout = dbc.Container(
 )
 
 
+# IMPORT MDODAL
 @app.callback(
     Output("import-modal", "is_open"),
     [Input("open-import", "n_clicks"), Input("close-import", "n_clicks")],
@@ -592,14 +634,25 @@ def toggle_import_modal(n1, n2, is_open):
     return is_open
 
 
+# GETTING STARTED MODAL
 @app.callback(
     Output("intro-modal", "is_open"),
-
     [Input("open-intro", "n_clicks"), Input("close-intro", "n_clicks")],
-
     [State("intro-modal", "is_open")],
 )
 def toggle_intro_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+
+# HOW TO READ PREREQUISITES
+@app.callback(
+    Output("readpre-modal", "is_open"),
+    [Input("open-readpre", "n_clicks"), Input("close-readpre", "n_clicks")],
+    [State("readpre-modal", "is_open")],
+)
+def toggle_readpre_modal(n1, n2, is_open):
     if n1 or n2:
         return not is_open
     return is_open
@@ -794,7 +847,7 @@ def update_stream_checklist(stream, ):
     elif stream == "sys-info-stream":
         stream_to_put = system_info
         stream_title = "Systems and Information Security"
-    else: # default gaming stream
+    else:  # default gaming stream
         stream_to_put = gaming
         stream_title = "Gaming"
 
