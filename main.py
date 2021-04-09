@@ -30,7 +30,7 @@ from Student import *
 
 # -------------------------------------------
 
-# Get data
+# # Get data
 df = pd.read_csv('cmpt-courses-cleaned.csv')
 df_dict = df.to_dict('records')
 
@@ -239,7 +239,14 @@ input_col = dbc.Col(
     ],
     width=3,
 )
-
+import_modal = [dbc.ModalHeader("Header"),
+                dbc.ModalBody([
+                    "This is the content of the modal"
+                ]),
+                dbc.ModalFooter(
+                    dbc.Button("Close", id="close-import", className="ml-auto")
+                ),
+                ]
 '''
 Column 2 - Data Tables
 '''
@@ -294,11 +301,25 @@ data_col = dbc.Col(
                 export_format='csv',
                 export_headers='display',
             ),
-        ])),
+        ]),
+            className='mb-3'
+        ),
 
         # dbc.Row([
         #     html.H2("Sunburst"),
         # ])
+
+        # HOW TO IMPORT MODAL
+        dbc.Button("How to Import", id="open-import", outline=True, color='info'),
+
+        # modal here
+
+        dbc.Modal(
+            children=import_modal,
+            id="import-modal",
+            # is_open=True,
+        ),
+
     ], width=6
 )
 
@@ -402,7 +423,27 @@ checklist_col = dbc.Col([
 )
 
 '''
-MAIN: Add content
+INTRO MODAL
+'''
+intro_modal = html.Div(
+    [
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Computer"),
+                dbc.ModalBody([
+
+                ]),
+                dbc.ModalFooter(
+                    # dbc.Button("Close", id="close", className="ml-auto")
+                ),
+            ],
+            size='xl',
+        )
+    ]
+)
+
+'''
+MAIN: APP LAYOUT
 '''
 app.layout = dbc.Container(
     style={'backgroundColor': '#00000', 'overflowX': 'hidden', 'margin-top': '10px'},
@@ -427,6 +468,18 @@ app.layout = dbc.Container(
 )
 
 
+@app.callback(
+    Output("import-modal", "is_open"),
+    [Input("open-import", "n_clicks"), Input("close-import", "n_clicks")],
+    [State("import-modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+
+# FOR IMPORTING
 def parse_contents(contents, filename):
     # Uploading file to data table: https://bit.ly/3mq82SK
     # print(contents, filename)
@@ -442,27 +495,6 @@ def parse_contents(contents, filename):
     elif 'xls' in filename:
         # Assume that the user uploaded an excel file
         return pd.read_excel(io.BytesIO(decoded))
-
-
-'''
-INTRO MODAL
-'''
-intro_modal = html.Div(
-    [
-        dbc.Modal(
-            [
-                dbc.ModalHeader("Computer"),
-                dbc.ModalBody([
-
-                ]),
-                dbc.ModalFooter(
-                    dbc.Button("Close", id="close", className="ml-auto")
-                ),
-            ],
-            size='xl',
-        )
-    ]
-)
 
 
 # FILTER COURSES - SEARCH

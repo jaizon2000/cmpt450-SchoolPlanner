@@ -38,7 +38,13 @@ class Student:
         return self.my_courses
 
     def set(self, new_df):
-        self.my_courses = self.my_courses.copy().iloc[0:0]  # erase all rows but keep cols names: https://bit.ly/2PCF5Xi
+        # set courses from a new df
+        new_dtypes = {"Course ID": object, "Course Name": object, "Credits": int, "Prerequisites": object,
+                      "Status": object}
+
+        # new_df.astype(new_dtypes)   # change dtypes
+        #
+        # self.my_courses = self.my_courses.copy().iloc[0:0]  # erase all rows but keep cols names: https://bit.ly/2PCF5Xi
         # print(self)
         try:
             print(new_df['id'])

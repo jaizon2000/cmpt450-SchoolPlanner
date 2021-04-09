@@ -95,13 +95,27 @@ So instead of getting the input as soon as there’s a change, the input is only
 ## Data Table
 
 - [x] Export current data table
-- [ ] Import a data table (csv, json)
+- [x] Import a data table (csv, json)
 - [ ] reset button (delete all rows)
 - [ ] how to modal
 
 when importing, it take the string but it’s has, `“....”()” ”` so the double quote inside the double quote cause an error when splitting and is illegal.
 
 [Stack overflow convo](https://bit.ly/39UCQWJ), [`quotechar`](https://bit.ly/3s478w9) 
+
+### How to Import Modal
+
+`import-modal`
+
+`open-import` , `close-import`
+
+The supported files you can export is .csv and .xls.
+
+You ***must*** follow this column format
+
+| Course ID | Course Name | Credits | Prerequisites | Status |
+| --------- | ----------- | ------- | ------------- | ------ |
+| CMPT 103  |             |         |               |        |
 
 ### Importing
 

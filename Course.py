@@ -1,19 +1,5 @@
 import pandas as pd
 
-
-class Student:
-    def __init__(self, name, student_id, courses_taken):
-        '''
-        A Student
-        :param name: name
-        :param student_id: 7 digit integer number
-        :param courses_taken: list of Course classes
-        '''
-        self.name = name
-        self.student_id = student_id
-        self.courses_taken = courses_taken
-
-
 class Course:
     def __init__(self, id, name, credit, desc, prereq=None):
         if prereq is None:
