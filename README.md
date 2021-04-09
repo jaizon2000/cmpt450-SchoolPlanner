@@ -103,7 +103,9 @@ when importing, it take the string but it’s has, `“....”()” ”` so the 
 
 [Stack overflow convo](https://bit.ly/39UCQWJ), [`quotechar`](https://bit.ly/3s478w9) 
 
-### How to Import Modal
+## Modals
+
+### Importing
 
 `import-modal`
 
@@ -156,7 +158,17 @@ data table changes -> change checklist
 
 `my-table`
 
-#### State
+## Intro Modal
+
+`intro-modal`
+
+`open-intro`, `close-intro`
+
+There are 3 columns: Find Courses, My Table, and Checklist
+
+1. Here you can search for a course’s full description quickly.
+   You can search by a course id, course name and, even by a course’s description.
+   
 
 ## Checklist Column
 

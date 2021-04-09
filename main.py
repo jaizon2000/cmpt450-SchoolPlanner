@@ -252,6 +252,7 @@ sample_df = pd.DataFrame({
 }).convert_dtypes()
 
 import_modal_content = '''
+## How to Import
 The supported files you can export is `.csv` and `.xls.`
 
 You ***must*** follow this column format (this means column name is ***case sensitive*** )
@@ -261,37 +262,74 @@ The only required cell to input is `Course ID` but it’s recommended to add a s
 Columns `Course Name`, `Credits`, and `Prerequisites` are automatically filled based on the given `Course ID`
 
 
-| Course ID | Course Name | Credits | Prerequisites | Status |
-| --------- | ----------- | ------- | ------------- | ------ |
-| CMPT 103  | --          | --      | --            | PLANNED|
+| Course ID | Course Name | Credits | Prerequisites | Status  |
+| --------- | ----------- | ------- | ------------- | ------- |
+| CMPT 103  | --          | --      | --            | PLANNED |
+
+Below is the raw `.csv` file of the example table above.
+
+```
+Course ID,Course Name,Credits,Prerequisites,Status
+CMPT 101,,,PLANNED,
+```
+
+
 '''
 
+import_modal = dbc.Modal(
+    [
+        dbc.ModalHeader("How to Import"),
+        dbc.ModalBody([
+            dcc.Markdown(import_modal_content),
+            dbc.Button(
+                "Download CSV template", color='info', id='download-template-btn',
+                href="https://bit.ly/3uuwDIK", target="_blank", className="mt-3"
+            ),
+        ]),
+        dbc.ModalFooter(
+            dbc.Button("Close", id="close-import", className="ml-auto", color='dark'),
+            style={'margin-top': '10px'}
+        ),
 
-import_modal = [dbc.ModalHeader("Header"),
-                dbc.ModalBody([
-                    dcc.Markdown(import_modal_content),
-                    dbc.Button(
-                        "Download CSV template", color='info', id='download-template-btn',
-                        href="https://bit.ly/3uuwDIK", target="_blank", className="mt-3"
-                    ),
-                ]),
-                dbc.ModalFooter(
-                    dbc.Button("Close", id="close-import", className="ml-auto", color='dark'),
-                    style={'margin-top': '10px'}
-                ),
+        dbc.Tooltip(
+            "You will be link to the raw csv data. "
+            "Right click on the page and Save As",
+            target="download-template-btn",
+        ),
+    ]
+    ,
+    id="import-modal",
+    # is_open=True,
+    size="lg",
+)
+intro_modal_content = '''
 
-                dbc.Tooltip(
-                    "You will be link to the raw csv data. "
-                    "Right click on the page and Save As",
-                    target="download-template-btn",
-                ),
-                ]
+'''
+
+'''
+INTRO MODAL
+'''
+intro_modal = dbc.Modal(
+    [
+        dbc.ModalHeader("Getting Started"),
+        dbc.ModalBody([
+            dcc.Markdown(intro_modal_content),
+        ]),
+        dbc.ModalFooter(
+            dbc.Button("Close", id="close-intro", className="ml-auto")
+        ),
+    ],
+    id='intro-modal',
+    size='xl',
+    # is_open=True,
+)
+
 '''
 Column 2 - Data Tables
 '''
 data_col = dbc.Col(
     [
-        html.H4('My Progress'),
+        html.H4('My Table'),
         dbc.Row(dbc.Col([
             # html.H2("Table"),
             # Filtering data table: https://bit.ly/31tUrjG
@@ -348,15 +386,13 @@ data_col = dbc.Col(
         #     html.H2("Sunburst"),
         # ])
 
-        # HOW TO IMPORT MODAL
+        # HOW TO IMPORT MODAL BTN
+        dbc.Button("Getting Started", id="open-intro", color='info', className='mr-2', ),
         dbc.Button("How to Import", id="open-import", outline=True, color='info'),
 
-        # modal here
-        dbc.Modal(
-            children=import_modal,
-            id="import-modal",
-            is_open=True,
-        ),
+        # MODALS
+        intro_modal,
+        import_modal,
 
     ], width=6
 )
@@ -461,26 +497,6 @@ checklist_col = dbc.Col([
 )
 
 '''
-INTRO MODAL
-'''
-intro_modal = html.Div(
-    [
-        dbc.Modal(
-            [
-                dbc.ModalHeader("Computer"),
-                dbc.ModalBody([
-
-                ]),
-                dbc.ModalFooter(
-                    # dbc.Button("Close", id="close", className="ml-auto")
-                ),
-            ],
-            size='xl',
-        )
-    ]
-)
-
-'''
 MAIN: APP LAYOUT
 '''
 app.layout = dbc.Container(
@@ -511,7 +527,20 @@ app.layout = dbc.Container(
     [Input("open-import", "n_clicks"), Input("close-import", "n_clicks")],
     [State("import-modal", "is_open")],
 )
-def toggle_modal(n1, n2, is_open):
+def toggle_import_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+
+@app.callback(
+    Output("intro-modal", "is_open"),
+
+    [Input("open-intro", "n_clicks"), Input("close-intro", "n_clicks")],
+
+    [State("intro-modal", "is_open")],
+)
+def toggle_intro_modal(n1, n2, is_open):
     if n1 or n2:
         return not is_open
     return is_open

@@ -15,7 +15,7 @@ class Student:
         self.df_dict = self.df.to_dict('records')
         self.course_class_list = [Course(c['id'], c['name'], c['credit'], c['description'], c['prereq']) for c in
                                   self.df_dict]
-        print(self.df.dtypes)
+
         self.my_courses = self.df.copy().iloc[0:0]  # erase all rows but keep cols: https://bit.ly/2PCF5Xi
 
     def add(self, course, status):
