@@ -5,6 +5,8 @@ import pandas as pd
 # Todo build onboarding with modal
 # Todo possibly add, col, courses you can take
 # todo fix update_checklist, when stream is changed, checks my-table to make the changes
+# todo add checklist column
+# todo add all courses to table
 
 # Uploading Files
 import base64
@@ -166,8 +168,8 @@ input_col = dbc.Col(
                             dcc.Dropdown(
                                 id='courses-input',
                                 options=[
-                                    {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
-                                ],
+                                            {'label': c['id'], 'value': c['id'.replace(' ', '-')]} for c in df_dict
+                                        ] + [{'label': "All CMPT Courses", 'value': 'all-cmpt'}],
                                 placeholder='Select Courses...',
                                 value=[],
                                 multi=True,
@@ -313,7 +315,7 @@ checklist_col = dbc.Col([
             {'label': 'General Stream', 'value': 'general-stream'},
             {'label': 'Databases and Interactive', 'value': 'database-stream'},
             {'label': 'Systems and Information Security', 'value': 'sys-info-stream'},
-            {'label': 'Gaming ', 'value': 'game-stream'},
+            {'label': 'Gaming ', 'value': 'gaming-stream'},
         ],
         placeholder="Choose a Stream",
         searchable=False,
@@ -427,7 +429,7 @@ app.layout = dbc.Container(
 
 def parse_contents(contents, filename):
     # Uploading file to data table: https://bit.ly/3mq82SK
-    print(contents, filename)
+    # print(contents, filename)
 
     content_type, content_string = contents.replace('"', '').split(',')
     decoded = base64.b64decode(content_string)
@@ -486,7 +488,7 @@ def update_course_results(search_value, *args):
             if search_value in course.id \
                     or search_value in course.desc.upper() \
                     or search_value in course.name.upper():
-                print(search_value)
+                # print(search_value)
                 collapse_ids.append(i)
             i += 1
 
@@ -540,10 +542,9 @@ def toggle_accordion(*args):
     State('status-radio', 'value'),
 )
 def update_my_table(n_clicks0,
-                    contents, filename,
+                    file_contents, filename,
                     selected_courses, radio_select
                     ):
-
     ctx = dash.callback_context  # seek the component where user clicks
     if not ctx.triggered:
         return stud.getdf_dict()
@@ -551,24 +552,29 @@ def update_my_table(n_clicks0,
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]
         print(button_id)
 
-
     # CHECK BUTTON ID
     if button_id != "add-to-planner-btn":
-        if contents is None and selected_courses is None:
+        # if file & no selected courses
+        if file_contents is None and selected_courses is None:
             return None
 
         # save into Student dataframe
-        elif contents is not None:
-            stud.set(parse_contents(contents, filename))
+        elif file_contents is not None:
+            stud.set(parse_contents(file_contents, filename))
             return stud.getdf_dict()
-    else:
-        # MULTISELECT DROPDOWN INPUT
-        if selected_courses is not None:
-            if radio_select == 'remove':
-                [stud.remove(c) for c in selected_courses]
+
+    # MULTISELECT DROPDOWN INPUT
+    if selected_courses is not None:
+        if radio_select == 'remove':
+            [stud.remove(c) for c in selected_courses]
+
+        else:
+            if "all-cmpt" in selected_courses:
+                [stud.add(c.id, radio_select.upper()) for c in course_classes_list]
 
             else:
                 [stud.add(c, radio_select.upper()) for c in selected_courses]
+
     return stud.getdf_dict()
 
 
@@ -672,7 +678,7 @@ def update_checklist(
             # for courses in data table, get the checklist value for it
             # print(c['id'], c['status'])
             # print(c)
-            print(stud.df_dict)
+            # print(stud.df_dict)
             [value.append(labels[label]) for label in labels.keys() if label == c['id'] and c['status'] == ""]
             checked_values += value
 
