@@ -259,7 +259,7 @@ import_modal_content = '''
 ###### This is an <h6> tag
 | Course ID | Course Name | Credits | Prerequisites | Status |
 | --------- | ----------- | ------- | ------------- | ------ |
-| CMPT 103  | --          | --      | --            | --     |
+| CMPT 103  | --          | --      | --            | PLANNED|
 '''
 import_modal = [dbc.ModalHeader("Header"),
                 dbc.ModalBody([
@@ -489,10 +489,6 @@ app.layout = dbc.Container(
     fluid=True
 )
 
-
-@app.callback(Output("download", "data"), [Input("download-template", "n_clicks")])
-def generate_csv(n_nlicks):
-    return send_data_frame(df.to_csv, filename="some_name.csv")
 
 
 @app.callback(
