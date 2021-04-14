@@ -305,12 +305,12 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
    Here you can search for a course’s full description quickly.
    You can search by a course id, course name and, even by a course’s description. As you search, results will update live.
 
-   ![](https://i.imgur.com/rtAsbTD.png) 
+   ![Search for courses](https://i.imgur.com/rtAsbTD.png) 
 
    You can select multiple courses and set a status for them. You can also remove them from the table.
    You can choose to import a `csv` or `xls` file to put data into your table. ***Check How to Import for more details*** 
 
-   ![](https://i.imgur.com/h6koO6e.png?1)
+   ![Update Ny Table](https://i.imgur.com/h6koO6e.png?1)
 
    In the future, you will be able to switch to a sunburst view, showing the relation of courses in your table more visually. For now we’ll have to stick with the table 😅.
 
@@ -322,7 +322,7 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
    Within the table, you can filter the data. You can filter by string or number, depending on the column.
 
-   ![](https://i.imgur.com/Q9g4VFR.png) 
+   ![Filtering data](https://i.imgur.com/Q9g4VFR.png) 
 
    The official docs on filtering tables can be found [here](https://bit.ly/31tUrjG).
 
