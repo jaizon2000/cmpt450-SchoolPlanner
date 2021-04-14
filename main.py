@@ -300,7 +300,7 @@ intro_modal_content = '''
 ##### Understand the basics of the application
 There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
-1. **Find Courses**
+### 1. Find Courses
 
    Here you can search for a course’s full description quickly.
    You can search by a course id, course name and, even by a course’s description. As you search, results will update live.
@@ -314,7 +314,7 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
    In the future, you will be able to switch to a sunburst view, showing the relation of courses in your table more visually. For now we’ll have to stick with the table 😅.
 
-2. **My Table**
+### 2. My Table
 
    This table represents your Computer Science Major degree plan.
    Every time you make changes from the ***Mark selected courses(s) as:*** section, it will be added to you table.
@@ -350,7 +350,7 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
    Below the table, are where you can go back to this window if you ever get lost. You can also find helpful information here like ***How to Import***.
 
-3. **Checklist**
+### 3. Checklist
 
    Finally, the checklist. The dropdown allows you to change your checklist requirements based on the stream you choose.
 
