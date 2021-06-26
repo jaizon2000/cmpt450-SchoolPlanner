@@ -11,7 +11,6 @@ import pandas as pd
 # Uploading Files
 import base64
 import io
-import dash
 
 # Import Ploty Dash
 import dash
@@ -245,7 +244,7 @@ input_col = dbc.Col(
 
 import_modal_content = '''
 ## How to Import
-The supported files you can export is `.csv` and `.xls.`
+The supported files you can export are `.csv` and `.xls.`
 
 You ***must*** follow this column format (this means column name is ***case sensitive*** )
 
@@ -294,6 +293,11 @@ import_modal = dbc.Modal(
     # is_open=True,
     size="lg",
 )
+
+images = [
+    html.Img(src='/assets/imgs/1.png'),
+]
+
 intro_modal_content = '''
 ### Welcome to the MacEwan Computer Sci. Major Planner 🎉 
 
@@ -305,12 +309,12 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
    Here you can search for a course’s full description quickly.
    You can search by a course id, course name and, even by a course’s description. As you search, results will update live.
 
-   ![Search for courses](https://i.imgur.com/rtAsbTD.png) 
+   ![Search for courses](/assets/imgs/1.png) 
 
    You can select multiple courses and set a status for them. You can also remove them from the table.
    You can choose to import a `csv` or `xls` file to put data into your table. ***Check How to Import for more details*** 
 
-   ![Update Ny Table](https://i.imgur.com/h6koO6e.png?1)
+   ![Update Ny Table](/assets/imgs/2.png)
 
    In the future, you will be able to switch to a sunburst view, showing the relation of courses in your table more visually. For now we’ll have to stick with the table 😅.
 
@@ -318,11 +322,11 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
    This table represents your Computer Science Major degree plan.
    Every time you make changes from the ***Mark selected courses(s) as:*** section, it will be added to you table.
-   You can export your table at any point into a `.csv` fille.
+   You can export your table at any point into a `.csv` file.
 
    Within the table, you can filter the data. You can filter by string or number, depending on the column.
 
-   ![Filtering data](https://i.imgur.com/Q9g4VFR.png) 
+   ![Filtering data](/assets/imgs/3.png) 
 
    The official docs on filtering tables can be found [here](https://bit.ly/31tUrjG).
 
@@ -356,7 +360,7 @@ There are **3 columns**: *Find Courses*, *My Table*, and *Checklist*
 
    The default stream is the *Gaming Stream*.
 
-   ![](https://i.imgur.com/rXgKu7e.png) 
+   ![A dropdown of streams](/assets/imgs/4.png) 
 
    In the future, any updates to your table will be able to reflect on you checklist.
 '''
