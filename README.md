@@ -3,7 +3,10 @@
 
 ### Screenshots
 
-
+![](/assets/imgs/prev6.png)  
+![](/assets/imgs/prev1.png)  
+![](/assets/imgs/prev4.png)  
+![](/assets/imgs/prev5.png)  
 
 ###### 🔗 Useful links
 
