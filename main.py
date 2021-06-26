@@ -294,10 +294,6 @@ import_modal = dbc.Modal(
     size="lg",
 )
 
-images = [
-    html.Img(src='/assets/imgs/1.png'),
-]
-
 intro_modal_content = '''
 ### Welcome to the MacEwan Computer Sci. Major Planner 🎉 
 
